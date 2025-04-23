@@ -1,18 +1,12 @@
 import rootReducer from "./Store/Reducers/rootReducer";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import { legacy_createStore as createStore } from "redux";
-
-const persistConfig = {
-  key: "auth",
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+import { persistStore } from "redux-persist";
+import { createStore, applyMiddleware } from "redux";
+import { thunk } from "redux-thunk";
 
 const reduxStore = () => {
-  const store = createStore(persistedReducer);
+  const store = createStore(rootReducer, applyMiddleware(thunk));
   const persistor = persistStore(store);
+
   return { store, persistor };
 };
 
