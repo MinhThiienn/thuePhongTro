@@ -3,7 +3,7 @@ import React from "react";
 
 const Searchitem = ({ iconBefore, iconAfter, text, font }) => {
   return (
-    <div className="bg-white py-2 px-4 w-full rounded-md text-gray-400 text-[12.3px] flex justify-between items-center">
+    <div className="bg-white py-2 px-4 w-full rounded-md text-gray-400 text-[13.3px] flex justify-between items-center">
       <div className="flex items-center gap-1 w-full ">
         {iconBefore}
         <span

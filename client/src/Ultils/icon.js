@@ -5,6 +5,10 @@ import { FaMoneyBillWave } from "react-icons/fa";
 import { FaCropSimple } from "react-icons/fa6";
 import { FaHouseChimney } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
+import { IoStar } from "react-icons/io5";
+import { GoHeart, GoHeartFill } from "react-icons/go";
+import { BsBookmarkStarFill } from "react-icons/bs";
+import { TbPlayerTrackNext, TbPlayerTrackPrev } from "react-icons/tb";
 const icons = {
   CiCirclePlus,
   GrFormNext,
@@ -13,5 +17,11 @@ const icons = {
   FaCropSimple,
   FaHouseChimney,
   IoMdSearch,
+  IoStar,
+  GoHeart,
+  GoHeartFill,
+  BsBookmarkStarFill,
+  TbPlayerTrackNext,
+  TbPlayerTrackPrev,
 };
 export default icons;

@@ -7,6 +7,7 @@ import chothuephongtro from "../../data/chothuephongtro.json";
 import { v4 } from "uuid";
 import genarateCode from "../../ultis/genarateCode";
 import image from "../models/image";
+import { where } from "sequelize";
 require("dotenv").config();
 
 const dataBody = chothuephongtro.body;
@@ -18,7 +19,7 @@ export const insertService = () =>
     try {
       dataBody.forEach(async (item) => {
         let postId = v4();
-        let labelCode = genarateCode(4);
+        let labelCode = genarateCode(item?.header?.class?.classType);
         let attributesId = v4();
         let userId = v4();
         let imagesId = v4();
@@ -47,9 +48,12 @@ export const insertService = () =>
           id: imagesId,
           image: JSON.stringify(item?.images),
         });
-        await db.Label.create({
-          code: labelCode,
-          value: item?.header?.class?.classType,
+        await db.Label.findOrCreate({
+          where: { code: labelCode },
+          defaults: {
+            code: labelCode,
+            value: item?.header?.class?.classType,
+          },
         });
 
         await db.Overview.create({

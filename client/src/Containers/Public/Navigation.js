@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { apiGetCategories } from "../../Services/category";
-import { formatVietnameseToString } from "../../Ultils/formatVietnameseToString";
+
+import { formatVietnameseToString } from "../../Ultils/Common/formatVietnameseToString";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../Store/Action";
 
 const notActive =
   "hover:bg-secondary2 px-4 h-full flex items-center bg-secondary1";
@@ -9,19 +11,14 @@ const active =
   "hover:bg-secondary2 px-4 h-full flex items-center  bg-secondary2";
 
 const Navigation = () => {
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const { categories } = useSelector((state) => state.app);
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await apiGetCategories();
-      if (response?.data.err === 0) {
-        setCategories(response.data.response);
-      }
-    };
-    fetchCategories();
+    dispatch(actions.getCategories());
   }, []);
 
   return (
-    <div className="w-screen flex justify-center items-center h-[40px] bg-secondary1 text-white ">
+    <div className="w-full flex justify-center items-center h-[40px] bg-secondary1 text-white ">
       <div className="w-3/5 flex h-full items-center text-sm font-medium">
         <NavLink
           to={`/`}

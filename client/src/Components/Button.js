@@ -4,9 +4,9 @@ const Button = ({ text, textColor, bgColor, IcAfter, onClick, fullWidth }) => {
   return (
     <button
       type="button"
-      className={` ${textColor} ${bgColor} ${
+      className={`p-2 ${textColor} ${bgColor} ${
         fullWidth && "w-full"
-      } outline-none rounded-md hover:underline flex items-center justify-center gap-1 p-2`}
+      } outline-none rounded-md hover:underline flex items-center justify-center gap-1`}
       onClick={onClick}
     >
       <span> {text}</span>

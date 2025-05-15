@@ -6,7 +6,7 @@ import genarateCode from "./ultis/genarateCode";
 import connectDatabase from "./src/config/connectDB";
 
 import initRoutes from "./src/routes";
-// console.log(genarateCode(4));
+// console.log(genarateCode("Thành Phố Hà Nội"));
 const app = express();
 app.use(
   cors({

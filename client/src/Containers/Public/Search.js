@@ -12,7 +12,7 @@ const {
 } = icons;
 const Search = () => {
   return (
-    <div className=" p-[10px] bg-[#febb02] rounded-lg flex-col lg:flex-row flex items-center justify-around gap-2">
+    <div className=" p-[10px] w-3/5  bg-[#febb02] rounded-lg flex-col lg:flex-row flex items-center justify-around gap-2">
       <Searchitem
         text="Phòng trọ, nhà trọ"
         iconBefore={<FaHouseChimney />}
@@ -36,7 +36,7 @@ const Search = () => {
       />
       <button
         type="button"
-        className=" outline-none px-4 py-2 w-full bg-secondary1 text-[12.3px] flex items-center justify-center gap-2 text-white font-medium"
+        className=" outline-none px-4 py-2 w-full bg-secondary1 text-[13.3px] flex items-center justify-center gap-2 text-white font-medium"
       >
         <IoMdSearch />
         Tìm Kiếm
