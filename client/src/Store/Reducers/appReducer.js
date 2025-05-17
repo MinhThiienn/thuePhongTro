@@ -2,6 +2,8 @@ import actionTypes from "../Action/actionTypes";
 const initState = {
   categories: [],
   msg: "",
+  prices: [],
+  areas: [],
 };
 
 const appRuducer = (state = initState, action) => {
@@ -12,7 +14,19 @@ const appRuducer = (state = initState, action) => {
         categories: action.categories || [],
         msg: action.msg || "",
       };
+    case actionTypes.GET_PRICES:
+      return {
+        ...state,
+        prices: action.prices || [],
+        msg: action.msg || "",
+      };
 
+    case actionTypes.GET_AREAS:
+      return {
+        ...state,
+        areas: action.areas || [],
+        msg: action.msg || "",
+      };
     default:
       return state;
   }

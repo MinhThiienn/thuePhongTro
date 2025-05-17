@@ -2,17 +2,24 @@ import React, { useState, useEffect } from "react";
 import { PageNumber } from "../../Components";
 import { useSelector } from "react-redux";
 import icons from "../../Ultils/icon";
-
+import { useSearchParams } from "react-router-dom";
 const { TbPlayerTrackNext, TbPlayerTrackPrev } = icons;
 const Page = ({ page }) => {
   const { count, posts } = useSelector((state) => state.post);
   const [arrPage, setArrPage] = useState([]);
-  const [currentPage, setCurrentPage] = useState(+page || 1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isHide, setIsHide] = useState(false);
   const [isHideStart, setIsHideStart] = useState(false);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    let maxPage = Math.floor(count / posts.length);
+    let page = searchParams.get("page");
+    page && +page !== currentPage && setCurrentPage(+page);
+    !page && setCurrentPage(1);
+  }, [searchParams]);
+
+  useEffect(() => {
+    let maxPage = Math.ceil(count / process.env.REACT_APP_LIMIT);
 
     let end = currentPage + 1 > maxPage ? maxPage : currentPage + 1;
     let start = currentPage - 1 <= 0 ? 1 : currentPage - 1;

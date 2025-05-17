@@ -8,9 +8,12 @@ import { v4 } from "uuid";
 import genarateCode from "../../ultis/genarateCode";
 import image from "../models/image";
 import { where } from "sequelize";
+import { dataPrices, dataArea } from "../../ultis/data";
+import { getNumberFromString } from "../../ultis/common";
+
 require("dotenv").config();
 
-const dataBody = chothuephongtro.body;
+const dataBody = nhachothue.body;
 const hashPassword = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
@@ -24,6 +27,10 @@ export const insertService = () =>
         let userId = v4();
         let imagesId = v4();
         let overviewId = v4();
+        let currentArea = getNumberFromString(
+          item?.header?.attributes?.acreage
+        );
+        let currentPrice = getNumberFromString(item?.header?.attributes?.price);
         await db.Post.create({
           id: postId,
           title: item?.header?.title,
@@ -31,12 +38,19 @@ export const insertService = () =>
           labelCode: labelCode,
           address: item?.header?.address,
           attributesId,
-          categoryCode: "CTPT",
+          categoryCode: "NCT",
           description: JSON.stringify(item?.mainContent?.content),
           userId,
           overviewId,
           imagesId,
+          areaCode: dataArea.find(
+            (area) => area.max > currentArea && area.min <= currentArea
+          )?.code,
+          priceCode: dataPrices.find(
+            (area) => area.max > currentPrice && area.min <= currentPrice
+          )?.code,
         });
+
         await db.Attribute.create({
           id: attributesId,
           price: item?.header?.attributes?.price,
@@ -79,7 +93,7 @@ export const insertService = () =>
           id: userId,
           name: item?.contact?.content.find((i) => i.name === "Liên hệ:")
             ?.content,
-          password: hashPassword("123456s"),
+          password: hashPassword("123456"),
           phone: item?.contact?.content.find((i) => i.name === "Điện thoại:")
             ?.content,
           zalo: item?.contact?.content.find((i) => i.name === "Zalo")?.content,
@@ -88,5 +102,27 @@ export const insertService = () =>
       resolve("Done");
     } catch (error) {
       reject(error);
+    }
+  });
+export const createPricesAndAreas = () =>
+  new Promise((resolve, reject) => {
+    try {
+      dataPrices.forEach(async (item, index) => {
+        await db.Price.create({
+          code: item.code,
+          value: item.value,
+          order: index + 1,
+        });
+      });
+      dataArea.forEach(async (item, index) => {
+        await db.Area.create({
+          code: item.code,
+          value: item.value,
+          order: index + 1,
+        });
+      });
+      resolve("OK");
+    } catch (err) {
+      reject(err);
     }
   });

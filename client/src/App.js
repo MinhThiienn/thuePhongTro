@@ -16,7 +16,6 @@ function App() {
       <Routes>
         <Route path={path.HOME} element={<Home />}>
           <Route path="*" element={<HomePage />} />
-          <Route path={path.HOME_PAGE} element={<HomePage />} />
           <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.CHO_THUE_CAN_HO} element={<RentalAparment />} />
           <Route path={path.CHO_THUE_MAT_BANG} element={<RentalSpace />} />

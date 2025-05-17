@@ -1,16 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Button, Item } from "../../Components";
-import { getPosts, getPostsLimit } from "../../Store/Action/post";
+import { getPostsLimit } from "../../Store/Action/post";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
-const ListPost = ({ page }) => {
+const ListPost = ({}) => {
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
   const { posts } = useSelector((state) => state.post);
-  const listRef = useRef();
+
   useEffect(() => {
-    let offset = page ? +(page - 1) : 0;
-    dispatch(getPostsLimit(offset));
-  }, [page]);
+    let params = [];
+    for (let entry of searchParams.entries()) {
+      params.push(entry);
+    }
+    let searchParamObj = {};
+    params?.map((i) => {
+      searchParamObj = { ...searchParamObj, [i[0]]: i[1] };
+    });
+    console.log("searchParamObj", searchParamObj);
+    dispatch(getPostsLimit(searchParamObj));
+  }, [searchParams]);
 
   return (
     <div className="w-full border p-2 bg-white shadow-md rounded-md px-6">

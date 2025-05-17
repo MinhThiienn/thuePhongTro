@@ -1,4 +1,3 @@
-import axios from "axios";
 import axiosConfig from "../aixosConfig";
 
 export const apiRegister = (payload) =>

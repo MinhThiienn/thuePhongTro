@@ -6,3 +6,5 @@ export { default as Province } from "./Province";
 export { default as Item } from "./item";
 export { default as PageNumber } from "./PageNumber";
 export { default as itemSidebar } from "./itemSidebar";
+export { default as Intro } from "./Intro";
+export { default as Contact } from "./Contact";

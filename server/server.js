@@ -4,9 +4,10 @@ import cors from "cors";
 import genarateCode from "./ultis/genarateCode";
 
 import connectDatabase from "./src/config/connectDB";
-
+import { dataPrices, dataArea } from "./ultis/data";
 import initRoutes from "./src/routes";
-// console.log(genarateCode("Thành Phố Hà Nội"));
+console.log(dataPrices);
+console.log(dataArea);
 const app = express();
 app.use(
   cors({

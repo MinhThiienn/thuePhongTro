@@ -1,4 +1,3 @@
-import { act } from "react";
 import actionTypes from "../Action/actionTypes";
 const initState = {
   posts: [],
