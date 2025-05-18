@@ -1,6 +1,7 @@
 import actionTypes from "./actionTypes";
 import { apiGetCategories } from "../../Services/category";
-import { apiGetArea, apiGetPrices } from "../../Services/app";
+import { apiGetArea, apiGetPrices, apiGetProvinces } from "../../Services/app";
+import { Province } from "../../Components";
 
 export const getCategories = () => async (dispatch) => {
   try {
@@ -10,6 +11,7 @@ export const getCategories = () => async (dispatch) => {
       dispatch({
         type: actionTypes.GET_CATEGORIES,
         categories: response.data.response,
+        msg: "",
       });
     } else {
       dispatch({
@@ -36,6 +38,7 @@ export const getPrices = () => async (dispatch) => {
         prices: response.data.response.sort((a, b) => {
           return +a.order - +b.order;
         }),
+        msg: "",
       });
     } else {
       dispatch({
@@ -62,6 +65,7 @@ export const getArea = () => async (dispatch) => {
         areas: response.data.response.sort(
           (a, b) => (parseInt(a.order) || 0) - (parseInt(b.order) || 0)
         ),
+        msg: "",
       });
     } else {
       dispatch({
@@ -74,6 +78,32 @@ export const getArea = () => async (dispatch) => {
     dispatch({
       type: actionTypes.GET_AREAS,
       areas: null,
+      msg: error.message || "Lỗi kết nối đến server",
+    });
+  }
+};
+
+export const getProvinces = () => async (dispatch) => {
+  try {
+    const response = await apiGetProvinces();
+
+    if (response?.data.err === 0) {
+      dispatch({
+        type: actionTypes.GET_PROVINCES,
+        provinces: response.data.response,
+        msg: "",
+      });
+    } else {
+      dispatch({
+        type: actionTypes.GET_PROVINCES,
+        provinces: null,
+        msg: response.data.msg,
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: actionTypes.GET_PROVINCES,
+      arprovinceseas: null,
       msg: error.message || "Lỗi kết nối đến server",
     });
   }

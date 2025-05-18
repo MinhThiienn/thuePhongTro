@@ -1,4 +1,4 @@
-import generateCode from "./genarateCode";
+import generateCode from "./generateCode";
 const prices = [
   {
     min: 0,

@@ -4,6 +4,7 @@ const initState = {
   msg: "",
   prices: [],
   areas: [],
+  provinces: [],
 };
 
 const appRuducer = (state = initState, action) => {
@@ -25,6 +26,12 @@ const appRuducer = (state = initState, action) => {
       return {
         ...state,
         areas: action.areas || [],
+        msg: action.msg || "",
+      };
+    case actionTypes.GET_PROVINCES:
+      return {
+        ...state,
+        provinces: action.provinces || [],
         msg: action.msg || "",
       };
     default:

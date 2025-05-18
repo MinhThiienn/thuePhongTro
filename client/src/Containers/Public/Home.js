@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
 import Navigation from "./Navigation";
 import Search from "./Search";
+import { Intro, Contact } from "../../Components";
+import * as actions from "../../Store/Action";
+import { useDispatch } from "react-redux";
 const Home = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(actions.getPrices());
+    dispatch(actions.getArea());
+    dispatch(actions.getProvinces());
+  }, []);
   return (
-    <div className="w-full flex gap-3 flex-col items-center h-full">
+    <div className="w-full flex gap-6 flex-col items-center h-full">
       <Header />
       <Navigation />
       <Search />
@@ -13,6 +22,9 @@ const Home = () => {
         {" "}
         <Outlet />{" "}
       </div>
+      <Intro />
+      <Contact />
+      <div className=" h-[500px]"></div>
     </div>
   );
 };

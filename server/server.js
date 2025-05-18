@@ -1,7 +1,6 @@
 import express from "express";
 require("dotenv").config();
 import cors from "cors";
-import genarateCode from "./ultis/genarateCode";
 
 import connectDatabase from "./src/config/connectDB";
 import { dataPrices, dataArea } from "./ultis/data";

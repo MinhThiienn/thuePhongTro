@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import { formatVietnameseToString } from "../../Ultils/Common/formatVietnameseToString";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ const Navigation = () => {
   const { categories } = useSelector((state) => state.app);
   useEffect(() => {
     dispatch(actions.getCategories());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="w-full flex justify-center items-center h-[40px] bg-secondary1 text-white ">
@@ -35,7 +35,7 @@ const Navigation = () => {
               >
                 {" "}
                 <NavLink
-                  to={`${formatVietnameseToString(item.value)}`}
+                  to={`/${formatVietnameseToString(item.value)}`}
                   className={({ isActive }) => (isActive ? active : notActive)}
                 >
                   {item.value}

@@ -3,28 +3,45 @@ import { text } from "../../Ultils/constant";
 import { Province, RelatedPost } from "../../Components";
 import ListPost from "./ListPost";
 import Page from "./Page";
+import { formatVietnameseToString } from "../../Ultils/Common/formatVietnameseToString";
 import ItemSidebar from "../../Components/itemSidebar";
-import { useSelector } from "react-redux";
-
-function HomePage() {
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import * as actions from "../../Store/Action";
+const Rental = () => {
   const { categories, prices, areas } = useSelector((state) => state.app);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const [categoryCurrent, setcategoryCurrent] = useState("");
 
+  const [categoryCode, setCategoryCode] = useState("null");
+  useEffect(() => {
+    const category = categories?.find(
+      (item) => `/${formatVietnameseToString(item.value)}` === location.pathname
+    );
+    setcategoryCurrent(category);
+    if (category) {
+      setCategoryCode(category.code);
+    }
+  }, [location]);
+
+  console.log(categoryCode);
   return (
     <div className=" w-full flex flex-col gap-3 ">
       <div>
-        <h1 className="text-[28px] font-bold">{text.HOME_TITLE}</h1>
-        <p className="text-base text-gray-700">{text.HOME_DESCRIPTION}</p>
+        <h1 className="text-[28px] font-bold">{categoryCurrent?.header}</h1>
+        <p className="text-base text-gray-700">{categoryCurrent?.subheader}</p>
       </div>
       <Province />
       <div className="w-full flex gap-4">
         <div className="w-[70%]">
           {" "}
-          <ListPost />
+          <ListPost categoryCode={categoryCode} />
           <Page />
         </div>
 
         <div className="w-[30%]  flex flex-col gap-4 justify-start items-center">
-          <ItemSidebar content={categories} title={"Danh sách cho thuê"} />
           <ItemSidebar
             content={prices}
             isDouble={true}
@@ -42,6 +59,6 @@ function HomePage() {
       </div>
     </div>
   );
-}
+};
 
-export default HomePage;
+export default Rental;

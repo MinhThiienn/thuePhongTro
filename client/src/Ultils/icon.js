@@ -9,6 +9,7 @@ import { IoStar } from "react-icons/io5";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { BsBookmarkStarFill } from "react-icons/bs";
 import { TbPlayerTrackNext, TbPlayerTrackPrev } from "react-icons/tb";
+import { GrFormPreviousLink } from "react-icons/gr";
 const icons = {
   CiCirclePlus,
   GrFormNext,
@@ -23,5 +24,6 @@ const icons = {
   BsBookmarkStarFill,
   TbPlayerTrackNext,
   TbPlayerTrackPrev,
+  GrFormPreviousLink,
 };
 export default icons;

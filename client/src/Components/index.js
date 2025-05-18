@@ -8,3 +8,6 @@ export { default as PageNumber } from "./PageNumber";
 export { default as itemSidebar } from "./itemSidebar";
 export { default as Intro } from "./Intro";
 export { default as Contact } from "./Contact";
+export { default as RelatedPost } from "./RelatedPost";
+export { default as SmItem } from "./SmItem";
+export { default as Modal } from "./Modal";

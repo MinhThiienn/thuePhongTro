@@ -1,7 +1,7 @@
 import React from "react";
 
-function RentalSpace() {
+const RentalSpace = () => {
   return <div>RentalSpace</div>;
-}
+};
 
 export default RentalSpace;

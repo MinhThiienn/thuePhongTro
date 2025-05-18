@@ -16,7 +16,7 @@ const Page = ({ page }) => {
     let page = searchParams.get("page");
     page && +page !== currentPage && setCurrentPage(+page);
     !page && setCurrentPage(1);
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
 
   useEffect(() => {
     let maxPage = Math.ceil(count / process.env.REACT_APP_LIMIT);
