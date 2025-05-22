@@ -5,8 +5,7 @@ import cors from "cors";
 import connectDatabase from "./src/config/connectDB";
 import { dataPrices, dataArea } from "./ultis/data";
 import initRoutes from "./src/routes";
-console.log(dataPrices);
-console.log(dataArea);
+
 const app = express();
 app.use(
   cors({

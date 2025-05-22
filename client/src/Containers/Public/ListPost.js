@@ -15,13 +15,23 @@ const ListPost = ({ categoryCode }) => {
       params.push(entry);
     }
     let searchParamObj = {};
-    params?.map((i) => {
-      searchParamObj = { ...searchParamObj, [i[0]]: i[1] };
+
+    params.forEach(([key, value]) => {
+      if (searchParamObj.hasOwnProperty(key)) {
+        if (Array.isArray(searchParamObj[key])) {
+          searchParamObj[key].push(value);
+        } else {
+          searchParamObj[key] = [searchParamObj[key], value];
+        }
+      } else {
+        searchParamObj[key] = value;
+      }
     });
+
     if (categoryCode) searchParamObj.categoryCode = categoryCode;
 
     dispatch(getPostsLimit(searchParamObj));
-  }, [searchParams, categoryCode]);
+  }, [searchParams, categoryCode, dispatch]);
 
   return (
     <div className="w-full border p-2 bg-white shadow-md rounded-md px-6">

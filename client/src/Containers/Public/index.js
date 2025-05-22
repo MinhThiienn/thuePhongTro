@@ -9,3 +9,4 @@ export { default as Search } from "./Search";
 export { default as ListPost } from "./ListPost";
 export { default as Page } from "./Page";
 export { default as DetailPost } from "./DetailPost";
+export { default as SearchDetail } from "./SearchDetail";

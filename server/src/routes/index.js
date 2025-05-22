@@ -5,6 +5,7 @@ import postRouter from "./post";
 import pricesRouter from "./price";
 import areaRouter from "./area";
 import provinceRouter from "./province";
+import CurrentUser from "./user";
 const initRoutes = (app) => {
   app.use("/api/v1/auth", authRouter);
   app.use("/api/v1/insert", insertRouter);
@@ -13,7 +14,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/price", pricesRouter);
   app.use("/api/v1/area", areaRouter);
   app.use("/api/v1/province", provinceRouter);
-
+  app.use("/api/v1/user", CurrentUser);
   return app.use("/", (req, res) => {
     res.send("server on...");
   });

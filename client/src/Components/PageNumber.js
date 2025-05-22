@@ -17,19 +17,34 @@ const PageNumber = ({ text, currentPage, icon, setCurrentPage, type }) => {
   const location = useLocation();
   const [paramSearch] = useSearchParams();
   let entries = paramSearch.entries();
-
   const append = (entries) => {
-    let param = [];
-    paramSearch.append("page", +text);
-    for (let entry of entries) {
-      param.push(entry);
+    let param = new URLSearchParams();
+
+    // Lặp lại toàn bộ entries cũ
+    for (let [key, value] of entries) {
+      param.append(key, value);
     }
 
-    let a = {};
-    param?.map((i) => {
-      a = { ...a, [i[0]]: i[1] };
-    });
-    return a;
+    // Thêm page mới
+    param.set("page", +text);
+
+    // Convert URLSearchParams về object đúng dạng (gộp các key giống nhau vào array)
+    const searchParamObj = {};
+
+    for (let [key, value] of param.entries()) {
+      if (searchParamObj.hasOwnProperty(key)) {
+        // Nếu đã có, thì push thêm
+        if (Array.isArray(searchParamObj[key])) {
+          searchParamObj[key].push(value);
+        } else {
+          searchParamObj[key] = [searchParamObj[key], value];
+        }
+      } else {
+        searchParamObj[key] = value;
+      }
+    }
+
+    return searchParamObj;
   };
 
   const handleChangePage = () => {
@@ -37,7 +52,7 @@ const PageNumber = ({ text, currentPage, icon, setCurrentPage, type }) => {
       setCurrentPage(+text);
 
       navigate({
-        pathname: location.pathname,
+        pathname: location?.pathname,
         search: createSearchParams(append(entries)).toString(),
       });
     }
