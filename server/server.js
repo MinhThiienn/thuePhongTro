@@ -5,8 +5,9 @@ import cors from "cors";
 import connectDatabase from "./src/config/connectDB";
 import { dataPrices, dataArea } from "./ultis/data";
 import initRoutes from "./src/routes";
-
+import generateDate from "./ultis/generateDate";
 const app = express();
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL,

@@ -1,16 +1,11 @@
 import React, { useCallback, useState, useEffect } from "react";
 import { Modal, Searchitem } from "../../Components";
 import icons from "../../Ultils/icon";
-import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../../Store/Action";
-import {
-  Navigate,
-  useNavigate,
-  createSearchParams,
-  useLocation,
-} from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { useNavigate, createSearchParams, useLocation } from "react-router-dom";
 import { path } from "../../Ultils/constant";
-import { location } from "../../Ultils/constant";
+
 const {
   FaHouseChimney,
   GrFormNext,

@@ -1,7 +1,6 @@
 import actionTypes from "./actionTypes";
 import { apiGetCategories } from "../../Services/category";
 import { apiGetArea, apiGetPrices, apiGetProvinces } from "../../Services/app";
-import { Province } from "../../Components";
 
 export const getCategories = () => async (dispatch) => {
   try {

@@ -1,10 +1,8 @@
-import React, { act } from "react";
+import React, { useState, useEffect } from "react";
 import icons from "../Ultils/icon";
-import { useState, useEffect } from "react";
-import item from "./item";
 import { getNumbersArea, getNumbersPrice } from "../Ultils/Common/getNumber";
-import { min } from "moment";
 import { getCodes, getCodesArea } from "../Ultils/Common/getCodes";
+
 const { GrFormPreviousLink } = icons;
 
 const Modal = ({
@@ -29,6 +27,7 @@ const Modal = ({
   });
 
   const [activedEL, setactivedEL] = useState("");
+
   useEffect(() => {
     const activeTrack = document.getElementById("track_active");
     if (!activeTrack) return;
@@ -55,6 +54,7 @@ const Modal = ({
       setpercent2(percent);
     }
   };
+
   const convert100toTarget = (percent) => {
     return name === "price"
       ? (Math.ceil(Math.round(percent * 1.5) / 5) * 5) / 10
@@ -62,6 +62,7 @@ const Modal = ({
       ? Math.ceil(Math.round(percent * 0.9) / 5) * 5
       : 0;
   };
+
   const convertto100 = (percent) => {
     let target = name === "price" ? 15 : name === "area" ? 90 : 1;
     return Math.floor((percent / target) * 100);
@@ -95,12 +96,6 @@ const Modal = ({
     let min = percent1 <= percent2 ? percent1 : percent2;
     let max = percent1 <= percent2 ? percent2 : percent1;
     let arrMinMax = [convert100toTarget(min), convert100toTarget(max)];
-    // const gaps =
-    //   name === "price"
-    //     ? getCodes(arrMinMax, content)
-    //     : name === "area"
-    //     ? getCodesArea(arrMinMax, content)
-    //     : [];
     handleSubmit(
       {
         [`${name}Number`]: arrMinMax,
@@ -123,9 +118,8 @@ const Modal = ({
           e.stopPropagation();
           setisShowModal(true);
         }}
-        className="w-[600px]  bg-white rounded-xl shadow-xl h-[550px] relative animate-fade-in"
+        className="w-[600px] bg-white rounded-xl shadow-xl h-[550px] relative animate-fade-in"
       >
-        {/* Header */}
         <div className="h-[60px] flex items-center px-5 border-b border-gray-200 gap-1 bg-gradient-to-r from-white via-gray-50 to-white shadow-sm rounded-t-xl">
           <button
             className="text-gray-700 hover:text-blue-600 transition duration-200"
@@ -136,7 +130,6 @@ const Modal = ({
           >
             <GrFormPreviousLink size={32} />
           </button>
-
           <h2 className="text-xl font-semibold text-gray-800 tracking-wide">
             {name === "category" && "Danh mục cho thuê"}
             {name === "province" && "Chọn tỉnh thành"}
@@ -145,10 +138,8 @@ const Modal = ({
           </h2>
         </div>
 
-        {/* Content */}
         {(name === "category" || name === "province") && (
-          <div className="p-6 flex flex-col space-y-4 overflow-y-auto">
-            {/* Default Option */}
+          <div className="p-6 flex flex-col space-y-4 overflow-y-auto max-h-[480px]">
             <label
               htmlFor="default"
               className="flex items-center gap-3 cursor-pointer py-2 border-b border-gray-200 hover:bg-gray-100 px-2 rounded-md transition"
@@ -169,7 +160,6 @@ const Modal = ({
               <span className="text-gray-700 font-medium">{defaultText}</span>
             </label>
 
-            {/* Dynamic Options */}
             {content?.map((item) => (
               <label
                 key={item.code}
@@ -197,8 +187,8 @@ const Modal = ({
 
         {(name === "price" || name === "area") && (
           <div className="p-12 py-20">
-            <div className=" flex items-center justify-center flex-col relative">
-              <div className="z-30 absolute top-[-65px] font-bold text-xl text-orange-600 border-2 border-orange-500 rounded-xl px-4 py-2 bg-white shadow-md ">
+            <div className="flex items-center justify-center flex-col relative">
+              <div className="z-30 absolute top-[-65px] font-bold text-xl text-orange-600 border-2 border-orange-500 rounded-xl px-4 py-2 bg-white shadow-md">
                 {percent1 === 100 && percent2 === 100
                   ? `Trên ${convert100toTarget(percent1)} ${
                       name === "price" ? "triệu" : "m²"
@@ -213,6 +203,7 @@ const Modal = ({
                         : convert100toTarget(percent1)
                     } ${name === "price" ? "triệu" : "m²"}`}
               </div>
+
               <div
                 onClick={handleClickStrack}
                 id="track"
@@ -233,14 +224,14 @@ const Modal = ({
                   setpercent1(+e.target.value);
                   activedEL && setactivedEL("");
                 }}
-                className="w-full appearance-none pointer-events-none  absolute top-0.5 bottom-0"
+                className="w-full appearance-none pointer-events-none absolute top-0.5 bottom-0"
               />
               <input
                 type="range"
                 max={"100"}
                 min={"0"}
                 step={"1"}
-                className="w-full appearance-none pointer-events-none  absolute top-0.5 bottom-0 "
+                className="w-full appearance-none pointer-events-none absolute top-0.5 bottom-0"
                 onChange={(e) => {
                   setpercent2(+e.target.value);
                   activedEL && setactivedEL("");
@@ -255,7 +246,6 @@ const Modal = ({
                     handleClickStrack(e, 0);
                   }}
                 >
-                  {" "}
                   0
                 </span>
                 <span
@@ -268,48 +258,35 @@ const Modal = ({
                   {name === "price"
                     ? "Trên 15 triệu"
                     : name === "area"
-                    ? " trên 90m²"
+                    ? "Trên 90m²"
                     : ""}
                 </span>
               </div>
             </div>
-            <div className="mt-24">
-              <h4 className="font-semibold mb-6 text-lg text-gray-800 relative pl-3 before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-5 before:bg-orange-500 before:rounded-sm">
-                Chọn Nhanh:
-              </h4>
 
-              <div className="flex gap-2 items-center flex-wrap w-full">
-                {content?.map((item) => {
-                  const isActive = item.code === activedEL;
-                  return (
-                    <button
-                      key={item.code}
-                      onClick={() =>
-                        handleActive(item.code, item.value, item.name)
-                      }
-                      className={`px-4 py-2 rounded-full font-medium transition-all duration-200 shadow-sm ${
-                        isActive
-                          ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md scale-105"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {item.value}
-                    </button>
-                  );
-                })}
+            <div className="mt-24">
+              <div className="grid grid-cols-3 gap-4">
+                {content?.map((el) => (
+                  <button
+                    key={el.code}
+                    onClick={() => handleActive(el.code, el.value)}
+                    className={`p-2 text-sm border rounded-md ${
+                      activedEL === el.code
+                        ? "bg-orange-500 text-white"
+                        : "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    {el.value}
+                  </button>
+                ))}
               </div>
+              <button
+                onClick={handleBFSubmit}
+                className="mt-6 w-full py-2 bg-orange-500 text-white rounded-md font-semibold hover:bg-orange-600 transition"
+              >
+                Áp dụng
+              </button>
             </div>
-          </div>
-        )}
-        {(name === "price" || name === "area") && (
-          <div className="w-full flex justify-center absolute bottom-12">
-            <button
-              type="button"
-              onClick={handleBFSubmit}
-              className=" w-full max-w-md  bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white py-3 px-8 font-semibold rounded-xl shadow-md active:scale-95"
-            >
-              ÁP DỤNG
-            </button>
           </div>
         )}
       </div>

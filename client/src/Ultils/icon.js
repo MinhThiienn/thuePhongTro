@@ -15,6 +15,7 @@ import { MdOutlineLibraryBooks } from "react-icons/md";
 import { BiUserPin } from "react-icons/bi";
 import { AiOutlineLogout } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { MdDeleteForever } from "react-icons/md";
 
 const icons = {
   CiCirclePlus,
@@ -37,5 +38,6 @@ const icons = {
   AiOutlineLogout,
   IoIosArrowDown,
   IoIosArrowUp,
+  MdDeleteForever,
 };
 export default icons;

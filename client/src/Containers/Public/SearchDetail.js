@@ -1,8 +1,8 @@
 import React from "react";
-import { Province, RelatedPost } from "../../Components";
+import { RelatedPost } from "../../Components";
 import ListPost from "./ListPost";
 import Page from "./Page";
-import { formatVietnameseToString } from "../../Ultils/Common/formatVietnameseToString";
+
 import ItemSidebar from "../../Components/itemSidebar";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
