@@ -15,9 +15,13 @@ const initRoutes = (app) => {
   app.use("/api/v1/area", areaRouter);
   app.use("/api/v1/province", provinceRouter);
   app.use("/api/v1/user", CurrentUser);
-  return app.use("/", (req, res) => {
-    res.send("server on...");
+
+  // Đặt cuối cùng để bắt các request không hợp lệ
+  app.use((req, res) => {
+    res.status(404).send("Route not found");
   });
+
+  return app;
 };
 
 export default initRoutes;

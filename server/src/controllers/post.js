@@ -13,38 +13,51 @@ export const getPosts = async (req, res) => {
 };
 
 export const getPostsLimit = async (req, res) => {
-  // Clean query keys
-  const cleanedQuery = {};
-  for (const key in req.query) {
-    const cleanKey = key.endsWith("[]") ? key.slice(0, -2) : key;
-    const value = req.query[key];
-    if (cleanedQuery[cleanKey]) {
-      cleanedQuery[cleanKey] = [].concat(cleanedQuery[cleanKey], value);
-    } else {
-      cleanedQuery[cleanKey] = value;
-    }
-  }
-
-  // Lấy page, priceNumber, areaNumber từ cleanedQuery
-  const { page, priceNumber, areaNumber, ...restQuery } = cleanedQuery;
-
-  // Parse priceNumber, areaNumber nếu cần
-  const parseRange = (val) => {
-    if (!val) return null;
-    if (Array.isArray(val)) return val.map(Number);
-    if (typeof val === "string") return val.split(",").map(Number);
-    return null;
-  };
-
-  const priceRange = parseRange(priceNumber);
-  const areaRange = parseRange(areaNumber);
-
   try {
+    // Parse query thành cleanedQuery
+    const cleanedQuery = {};
+    for (const key in req.query) {
+      // Match key dạng order[0], order[1]
+      const arrayMatch = key.match(/^(\w+)\[(\d+)\]$/);
+      if (arrayMatch) {
+        const [_, baseKey, index] = arrayMatch;
+        cleanedQuery[baseKey] = cleanedQuery[baseKey] || [];
+        cleanedQuery[baseKey][index] = req.query[key];
+        continue;
+      }
+
+      // Match key dạng priceNumber[], areaNumber[]
+      const cleanKey = key.endsWith("[]") ? key.slice(0, -2) : key;
+      const value = req.query[key];
+
+      if (cleanedQuery[cleanKey]) {
+        cleanedQuery[cleanKey] = [].concat(cleanedQuery[cleanKey], value);
+      } else {
+        cleanedQuery[cleanKey] = value;
+      }
+    }
+
+    // Tách các biến cần thiết từ query
+    const { page, priceNumber, areaNumber, order, ...restQuery } = cleanedQuery;
+
+    // Parse range giá/diện tích
+    const parseRange = (val) => {
+      if (!val) return null;
+      if (Array.isArray(val)) return val.map(Number);
+      if (typeof val === "string") return val.split(",").map(Number);
+      return null;
+    };
+
+    const priceRange = parseRange(priceNumber);
+    const areaRange = parseRange(areaNumber);
+
+    // Gọi service
     const response = await getPostsService.getPostsServiceLimit(
       page,
-      restQuery,
+      { ...restQuery, order },
       { priceNumber: priceRange, areaNumber: areaRange }
     );
+
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({
@@ -141,6 +154,28 @@ export const updatePost = async (req, res) => {
       });
 
     const response = await getPostsService.updatePostService(req.body);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({
+      err: -1,
+      msg: "Server error: " + error.message,
+    });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  const { postId } = req.query;
+  const { id } = req.user;
+
+  try {
+    if (!postId || !id) {
+      return res.status(400).json({
+        err: 1,
+        msg: "Missing inputs",
+      });
+    }
+
+    const response = await getPostsService.deletePost(postId);
     return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({

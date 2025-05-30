@@ -16,7 +16,9 @@ import { BiUserPin } from "react-icons/bi";
 import { AiOutlineLogout } from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdDeleteForever } from "react-icons/md";
-
+import { MdLocationPin } from "react-icons/md";
+import { TiStopwatch } from "react-icons/ti";
+import { LiaSearchLocationSolid } from "react-icons/lia";
 const icons = {
   CiCirclePlus,
   GrFormNext,
@@ -39,5 +41,8 @@ const icons = {
   IoIosArrowDown,
   IoIosArrowUp,
   MdDeleteForever,
+  MdLocationPin,
+  TiStopwatch,
+  LiaSearchLocationSolid,
 };
 export default icons;

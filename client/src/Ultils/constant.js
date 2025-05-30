@@ -12,6 +12,10 @@ export const path = {
   SYSTEM: "/he-thong/*",
   CREATE_POST: "tao-moi-bai-dang",
   MANAGE_POST: "quan-ly-bai-dang",
+  EDIT_ACCOUNT: "sua-thong-tin-ca-nhan",
+  CONTACT: "lien-he",
+  DETAIL: "/chi-tiet/",
+  DETAIL_ALL: "chi-tiet/*",
 };
 
 export const text = {
@@ -36,4 +40,17 @@ export const location = [
     image: "https://phongtro123.com/images/location_dn.jpg",
     id: "dn",
   },
+];
+
+export const underMap = [
+  'Bạn đang xem nội dung tin đăng: "',
+  '". Mọi thông tin liên quan đến tin đăng này chỉ mang tính chất tham khảo. Nếu bạn có phản hồi với tin đăng này(báo xấu, tin đẫ cho thuê, không liên lạc được,... ), vui lòng thông báo để PhongtroVMT có thể xử lý.',
+];
+
+export const attention = [
+  "Nội dung phải viết bằng tiếng việt có dấu",
+  "Tiêu đề tin không dài quá 100 ký tự",
+  "Các bạn nên điền đầy đủ thông tin vào các mục để đăng tin có hiệu quả hơn",
+  "Để tăng độ tin cậy và tin rao được nhiêu người quan tâm hơn, hãy sửa vị trí tin rao của bạn",
+  "Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có hình ảnh. Hãy đăng ảnh để được giao dịch nhanh chóng!",
 ];

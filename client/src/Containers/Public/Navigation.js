@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
-
+import { NavLink } from "react-router-dom";
+import { path } from "../../Ultils/constant";
 import { formatVietnameseToString } from "../../Ultils/Common/formatVietnameseToString";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../Store/Action";
@@ -47,6 +47,12 @@ const Navigation = ({ isAdmin }) => {
               </div>
             );
           })}
+        <NavLink
+          to={path.CONTACT}
+          className={({ isActive }) => (isActive ? active : notActive)}
+        >
+          Liên hệ
+        </NavLink>
       </div>
     </div>
   );

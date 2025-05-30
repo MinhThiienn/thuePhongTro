@@ -40,7 +40,7 @@ export const getPostsService = () =>
 
 export const getPostsServiceLimit = (
   page,
-  query,
+  { limitPost, order, ...query },
   { priceNumber, areaNumber }
 ) =>
   new Promise(async (resolve, reject) => {
@@ -49,16 +49,17 @@ export const getPostsServiceLimit = (
       const queries = {
         ...query,
       };
-      if (priceNumber) queries.priceNumber = { [Op.between]: priceNumber };
-      if (areaNumber) queries.areaNumber = { [Op.between]: areaNumber };
+      const limit = +limitPost || +process.env.LIMIT;
+      queries.limit = limit;
+      if (priceNumber) query.priceNumber = { [Op.between]: priceNumber };
+      if (areaNumber) query.areaNumber = { [Op.between]: areaNumber };
+      if (order) queries.order = [order];
       const response = await db.Post.findAndCountAll({
-        where: queries,
+        where: query,
         raw: true,
         nest: true,
-        offset: offset * +process.env.LIMIT,
-        limit: +process.env.LIMIT,
-        order: [["createdAt", "DESC"]],
-
+        offset: offset * limit,
+        ...queries,
         include: [
           { model: db.Image, as: "images", attributes: ["image"] },
           {
@@ -71,6 +72,7 @@ export const getPostsServiceLimit = (
             as: "user",
             attributes: ["name", "phone", "zalo"],
           },
+          { model: db.Overview, as: "overview" },
         ],
 
         attributes: ["id", "title", "star", "address", "description"],
@@ -84,6 +86,7 @@ export const getPostsServiceLimit = (
       reject(error);
     }
   });
+
 export const getNewPostsService = () =>
   new Promise(async (resolve, reject) => {
     try {
@@ -349,3 +352,18 @@ export const updatePostService = async (body) => {
     throw error;
   }
 };
+
+export const deletePost = (postId) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await db.Post.destroy({
+        where: { id: postId },
+      });
+      resolve({
+        err: response > 0 ? 0 : 1,
+        msg: response > 0 ? "Deleted" : "No posts delete",
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });

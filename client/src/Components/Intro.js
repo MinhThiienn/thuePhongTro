@@ -3,69 +3,75 @@ import { text } from "../Ultils/dataIntro";
 import icons from "../Ultils/icon";
 import Button from "./Button";
 import { useSelector } from "react-redux";
-import item from "./item";
 import { Link } from "react-router-dom";
 import { formatVietnameseToString } from "../Ultils/Common/formatVietnameseToString";
+
 const Intro = () => {
   const { IoStar } = icons;
   const star = [1, 2, 3, 4, 5];
   const { categories } = useSelector((state) => state.app);
 
   return (
-    <div className="w-3/5 bg-white rounded-md shadow-md p-4 items-center flex flex-col justify-center gap-4 ">
-      <h3 className="font-bold text-lg">{text.title}</h3>
-      <p className="text-gray-800 text-center my-4">
+    <div className="bg-white rounded-3xl shadow-md p-8 w-3/5  mx-auto flex flex-col items-center gap-6">
+      <h3 className="font-bold text-2xl text-center text-gray-800">
+        {text.title}
+      </h3>
+
+      <p className="text-gray-700 text-center text-base leading-relaxed">
         {text.description}
-        <span className="text-link">
+        <span className="text-link font-medium">
           {categories?.length > 0 &&
-            categories.map((item) => {
-              return (
-                <Link
-                  to={`/${formatVietnameseToString(item.value)}`}
-                  key={item.code}
-                  className="text-blue-500  font-medium hover:text-orange-600"
-                >
-                  {`${item.value.toLowerCase()}, `}
-                </Link>
-              );
-            })}
+            categories.map((item) => (
+              <Link
+                to={`/${formatVietnameseToString(item.value)}`}
+                key={item.code}
+                className="text-blue-600 hover:text-orange-500 transition-colors"
+              >
+                {`${item.value.toLowerCase()}, `}
+              </Link>
+            ))}
         </span>
         {text.description2}
       </p>
-      <div className="flex items-center justify-around w-full">
-        {text.statistic.map((item, index) => {
-          return (
-            <div
-              key={index}
-              className="flex flex-col items-center justify-center"
-            >
-              <h4 className="font-bold text-lg">{item.value}</h4>
-              <p className="text-gray-700">{item.name}</p>
-            </div>
-          );
-        })}
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full mt-4">
+        {text.statistic.map((item, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center bg-gray-50 p-4 rounded-xl shadow hover:shadow-md transition"
+          >
+            <h4 className="font-bold text-xl text-blue-700">{item.value}</h4>
+            <p className="text-gray-600 text-sm">{item.name}</p>
+          </div>
+        ))}
       </div>
-      <h3 className="font-bold text-lg py-2">{text.price}</h3>
+
+      <h3 className="font-bold text-xl py-2 text-center text-secondary2">
+        {text.price}
+      </h3>
+
       <div className="flex items-center gap-1 justify-center">
-        {star.map((item) => {
-          return (
-            <span key={item}>
-              <IoStar size={24} color={"yellow"} />
-            </span>
-          );
-        })}
+        {star.map((item) => (
+          <IoStar key={item} size={24} className="text-yellow-400" />
+        ))}
       </div>
-      <p className="text-gray-600 italic text-center">{text.comment}</p>
-      <span className="text-gray-700">{text.author}</span>
-      <h3 className="font-bold text-lg py-2">{text.question}</h3>
-      <p>{text.answer}</p>
+
+      <p className="text-gray-500 italic text-center max-w-xl">
+        “{text.comment}”
+      </p>
+      <span className="text-gray-700 font-medium">{text.author}</span>
+
+      <h3 className="font-bold text-lg pt-6 text-center">{text.question}</h3>
+      <p className="text-center text-gray-700">{text.answer}</p>
+
       <Button
-        text="Đăng tin ngay"
-        bgColor="bg-secondary2"
+        text="📢 Đăng tin ngay"
+        bgColor="bg-secondary2 hover:bg-secondary1"
         textColor="text-white"
-        px={"px-6"}
+        px="px-8"
       />
-      <div className=" h-24"></div>
+
+      <div className="h-16" />
     </div>
   );
 };

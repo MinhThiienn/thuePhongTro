@@ -14,13 +14,14 @@ app.use(
     methods: ["POST", "GET", "PUT", "DELETE"],
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 initRoutes(app);
 connectDatabase();
 
 const port = process.env.PORT || 8888;
-const listener = app.listen(port, () => {
-  console.log(`Server running on the port ${listener.address().port}`);
+
+const server = app.listen(port, () => {
+  console.log(`Server running on the port ${server.address().port}`);
 });

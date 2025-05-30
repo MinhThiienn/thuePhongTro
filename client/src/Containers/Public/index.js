@@ -12,3 +12,4 @@ export { default as DetailPost } from "./DetailPost";
 export { default as SearchDetail } from "./SearchDetail";
 
 export { default as Select } from "./Select";
+export { default as ContactUser } from "./ContactUser";

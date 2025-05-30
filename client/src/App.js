@@ -6,9 +6,15 @@ import {
   DetailPost,
   Rental,
   SearchDetail,
+  ContactUser,
 } from "./Containers/Public";
 import { path } from "./Ultils/constant";
-import { System, CreatePost, ManagePost } from "./Containers/System";
+import {
+  System,
+  CreatePost,
+  ManagePost,
+  EditAccount,
+} from "./Containers/System";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as actions from "./Store/Action";
@@ -38,16 +44,18 @@ function App() {
           <Route path={path.CHO_THUE_PHONG_TRO} element={<Rental />} />
           <Route path={path.NHA_CHO_THUE} element={<Rental />} />
           <Route path={path.SEARCH} element={<SearchDetail />} />
+          <Route path={path.CONTACT} element={<ContactUser />} />
           <Route
             path={path.DETAL_POST__TITLE__POSTID}
             element={<DetailPost />}
           />
-          <Route path="chi-tiet/*" element={<DetailPost />} />
+          {/* <Route path={path.DETAIL_ALL} element={<DetailPost />} /> */}
           <Route path="*" element={<HomePage />} />
         </Route>
         <Route path={path.SYSTEM} element={<System />}>
           <Route path={path.CREATE_POST} element={<CreatePost />} />
           <Route path={path.MANAGE_POST} element={<ManagePost />} />
+          <Route path={path.EDIT_ACCOUNT} element={<EditAccount />} />
         </Route>
       </Routes>
     </div>
