@@ -4,7 +4,7 @@ import icons from "../Ultils/icon";
 import { Link } from "react-router-dom";
 import { formatVietnameseToString } from "../Ultils/Common/formatVietnameseToString";
 import { path } from "../Ultils/constant";
-
+import { useSelector } from "react-redux";
 const indexs = [0, 1, 2, 3];
 const { IoStar, GoHeart, GoHeartFill, BsBookmarkStarFill } = icons;
 
@@ -19,7 +19,7 @@ const Item = ({
   id,
 }) => {
   const [isHoverHeart, setIsHoverHeart] = useState(false);
-
+  console.log(user);
   const handleStar = (star) => {
     let stars = [];
     for (let i = 1; i <= +star; i++) {
@@ -109,12 +109,19 @@ const Item = ({
             <p className="text-sm font-medium">{user?.name}</p>
           </div>
           <div className="flex gap-2">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded-md transition">
+            <a
+              href={`tel:${user?.phone}`}
+              className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded-md transition"
+            >
               Gọi {user?.phone}
-            </button>
-            <button className="border border-blue-600 text-blue-600 hover:bg-blue-100 text-sm px-3 py-1 rounded-md transition">
+            </a>
+            <a
+              target="_blank"
+              href={`https://zalo.me/${user?.zalo}`}
+              className="border border-blue-600 text-blue-600 hover:bg-blue-100 text-sm px-3 py-1 rounded-md transition"
+            >
               Nhắn Zalo
-            </button>
+            </a>
           </div>
         </div>
       </div>

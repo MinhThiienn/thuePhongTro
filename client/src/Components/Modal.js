@@ -95,16 +95,25 @@ const Modal = ({
   const handleBFSubmit = (e) => {
     let min = percent1 <= percent2 ? percent1 : percent2;
     let max = percent1 <= percent2 ? percent2 : percent1;
-    let arrMinMax = [convert100toTarget(min), convert100toTarget(max)];
+    let arrMinMax =
+      percent1 === percent2 && percent1 === 100
+        ? [convert100toTarget(min), 999999999]
+        : [(convert100toTarget(min), convert100toTarget(max))];
     handleSubmit(
       {
         [`${name}Number`]: arrMinMax,
-        [name]: `Từ ${convert100toTarget(min)} - ${convert100toTarget(max)} ${
-          name === "price" ? "triệu" : "m²"
+        [name]: `Từ ${convert100toTarget(min)} ${
+          percent1 === percent2 && percent1 === 100
+            ? ""
+            : `-${convert100toTarget(max)}`
+        } ${name === "price" ? "triệu" : "m²"} ${
+          percent1 === percent2 && percent1 === 100 ? "trở lên" : ""
         }`,
       },
       e,
-      { [`${name}Arr`]: [min, max] }
+      {
+        [`${name}Arr`]: [min, max],
+      }
     );
   };
 

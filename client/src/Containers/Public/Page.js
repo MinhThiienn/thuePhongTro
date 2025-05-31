@@ -50,7 +50,7 @@ const Page = ({ page }) => {
       {!isHide && (
         <PageNumber
           icon={<TbPlayerTrackNext />}
-          text={Math.floor(count / posts.length)}
+          text={Math.ceil(count / process.env.REACT_APP_LIMIT)}
           type="end"
           setCurrentPage={setCurrentPage}
         />

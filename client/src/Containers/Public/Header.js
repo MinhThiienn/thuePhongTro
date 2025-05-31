@@ -101,6 +101,9 @@ const Header = () => {
             textColor="text-white"
             bgColor="bg-secondary2"
             IcAfter={CiCirclePlus}
+            onClick={() => {
+              navigate("/he-thong/tao-moi-bai-dang");
+            }}
           />
         </div>
       </div>

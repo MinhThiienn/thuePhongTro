@@ -2,16 +2,17 @@ import React, { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPostsLimit } from "../../Store/Action";
-import { Slider, Map } from "../../Components";
+import { Slider, Map, BoxInfor, RelatedPost } from "../../Components";
 import icons from "../../Ultils/icon";
 import { FiHash } from "react-icons/fi";
 import { underMap } from "../../Ultils/constant";
-
+import { useNavigate, createSearchParams } from "react-router-dom";
+import { path } from "../../Ultils/constant";
 const DetailPost = () => {
   const dispatch = useDispatch();
   const { postId } = useParams();
   const { posts } = useSelector((state) => state.post);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (postId) {
       dispatch(getPostsLimit({ id: postId }));
@@ -59,7 +60,20 @@ const DetailPost = () => {
   if (!posts || posts.length === 0) {
     return <div>Loading bài viết...</div>;
   }
-
+  const handleFilterLabel = () => {
+    const titleSearch = `Tìm kiếm tin đăng theo chuyên mục ${posts[0]?.labelData?.value}`;
+    navigate(
+      {
+        pathname: `/s${path.SEARCH}`,
+        search: createSearchParams({
+          labelCode: posts[0]?.labelData?.code,
+        }).toString(),
+      },
+      {
+        state: { titleSearch },
+      }
+    );
+  };
   return (
     <div className="w-full flex flex-col md:flex-row gap-6">
       <div className="w-full md:w-[70%]">
@@ -71,8 +85,11 @@ const DetailPost = () => {
             </h2>
             <div className="flex items-center gap-2">
               <span className="text-gray-600">Chuyên mục:</span>
-              <span className="text-blue-600 underline font-semibold hover:text-orange-500 cursor-pointer">
-                {posts[0]?.overview?.area}
+              <span
+                onClick={handleFilterLabel}
+                className="text-blue-600 underline font-semibold hover:text-orange-500 cursor-pointer"
+              >
+                {posts[0]?.labelData?.value}
               </span>
             </div>
             <div className="flex items-center gap-2 text-gray-700">
@@ -173,8 +190,13 @@ const DetailPost = () => {
         </div>
       </div>
 
-      <div className="w-full md:w-[30%] mt-4 md:mt-0">
-        <div className="bg-white rounded-2xl shadow-md p-4">SideBar</div>
+      <div className="w-full md:w-[40%] mt-4 md:mt-0  flex flex-col gap-8">
+        {/* <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col gap-8"> */}
+        <BoxInfor userData={posts[0]?.user} />
+
+        <RelatedPost />
+        <RelatedPost newPost />
+        {/* </div> */}
       </div>
     </div>
   );

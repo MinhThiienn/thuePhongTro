@@ -1,8 +1,10 @@
 import React from "react";
 import { text } from "../Ultils/dataContact";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const Contact = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-3xl shadow-md p-8 w-3/5  mx-auto flex flex-col items-center gap-8">
       <img
@@ -37,6 +39,10 @@ const Contact = () => {
         bgColor="bg-blue-600 hover:bg-blue-700"
         textColor="text-white"
         px="px-8"
+        onClick={() => {
+          navigate("/lien-he");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
       />
     </div>
   );

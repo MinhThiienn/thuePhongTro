@@ -18,6 +18,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as actions from "./Store/Action";
+import { ScrollToTop } from "./Components";
 function App() {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -35,6 +36,7 @@ function App() {
   }, []);
   return (
     <div className=" bg-primary overflow-hidden">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />}>
           <Route index element={<HomePage />} />

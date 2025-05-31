@@ -20,3 +20,5 @@ export { default as Loading } from "./Loading";
 export { default as UpdatePost } from "./UpdatePost";
 export { default as Slider } from "./Slider";
 export { default as Map } from "./Map";
+export { default as BoxInfor } from "./BoxInfor";
+export { default as ScrollToTop } from "./ScrollTop";

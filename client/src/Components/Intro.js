@@ -5,12 +5,12 @@ import Button from "./Button";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { formatVietnameseToString } from "../Ultils/Common/formatVietnameseToString";
-
+import { useNavigate } from "react-router-dom";
 const Intro = () => {
   const { IoStar } = icons;
   const star = [1, 2, 3, 4, 5];
   const { categories } = useSelector((state) => state.app);
-
+  const navigate = useNavigate();
   return (
     <div className="bg-white rounded-3xl shadow-md p-8 w-3/5  mx-auto flex flex-col items-center gap-6">
       <h3 className="font-bold text-2xl text-center text-gray-800">
@@ -69,6 +69,10 @@ const Intro = () => {
         bgColor="bg-secondary2 hover:bg-secondary1"
         textColor="text-white"
         px="px-8"
+        onClick={() => {
+          navigate("/he-thong/tao-moi-bai-dang");
+          // window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
       />
 
       <div className="h-16" />

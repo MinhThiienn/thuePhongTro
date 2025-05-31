@@ -285,7 +285,7 @@ const CreatePost = ({ isEdit }) => {
             <div className="h-[300px]"></div>
           </div>
 
-          <div className="lg:w-[30%] w-full h-[660px] bg-white rounded-xl shadow-md p-4 flex flex-col text-gray-700">
+          <div className="lg:w-[30%] w-full h-full bg-white rounded-xl shadow-md p-4 flex flex-col text-gray-700">
             <div className="flex-grow">
               <Map address={payload?.address} />
             </div>

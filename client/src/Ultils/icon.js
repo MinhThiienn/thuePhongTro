@@ -19,6 +19,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { MdLocationPin } from "react-icons/md";
 import { TiStopwatch } from "react-icons/ti";
 import { LiaSearchLocationSolid } from "react-icons/lia";
+import { FaPhoneAlt } from "react-icons/fa";
 const icons = {
   CiCirclePlus,
   GrFormNext,
@@ -44,5 +45,6 @@ const icons = {
   MdLocationPin,
   TiStopwatch,
   LiaSearchLocationSolid,
+  FaPhoneAlt,
 };
 export default icons;
