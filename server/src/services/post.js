@@ -5,7 +5,9 @@ import moment from "moment";
 import generateCode from "../../ultis/generateCode";
 import generateDate from "../../ultis/generateDate";
 require("dotenv").config();
-const { Op, UUID } = require("sequelize");
+
+const { Op } = require("sequelize");
+
 export const getPostsService = () =>
   new Promise(async (resolve, reject) => {
     try {
@@ -22,15 +24,15 @@ export const getPostsService = () =>
           {
             model: db.User,
             as: "user",
-            attributes: ["name", "phone", "zalo"],
+            attributes: ["name", "phone", "zalo", "avatar"],
           },
         ],
-
         attributes: ["id", "title", "star", "address", "description"],
       });
+
       resolve({
         err: response ? 0 : 1,
-        msg: response ? "OK" : "Getting posts is  failed",
+        msg: response ? "OK" : "Getting posts failed",
         response,
       });
     } catch (error) {
@@ -46,14 +48,13 @@ export const getPostsServiceLimit = (
   new Promise(async (resolve, reject) => {
     try {
       let offset = !page || +page <= 1 ? 0 : +page - 1;
-      const queries = {
-        ...query,
-      };
+      const queries = { ...query };
       const limit = +limitPost || +process.env.LIMIT;
       queries.limit = limit;
       if (priceNumber) query.priceNumber = { [Op.between]: priceNumber };
       if (areaNumber) query.areaNumber = { [Op.between]: areaNumber };
       if (order) queries.order = [order];
+
       const response = await db.Post.findAndCountAll({
         where: query,
         raw: true,
@@ -70,7 +71,7 @@ export const getPostsServiceLimit = (
           {
             model: db.User,
             as: "user",
-            attributes: ["name", "phone", "zalo"],
+            attributes: ["name", "phone", "zalo", "avatar"],
           },
           { model: db.Overview, as: "overview" },
           {
@@ -81,12 +82,12 @@ export const getPostsServiceLimit = (
             },
           },
         ],
-
         attributes: ["id", "title", "star", "address", "description"],
       });
+
       resolve({
         err: response ? 0 : 1,
-        msg: response ? "OK" : "Getting posts is  failed",
+        msg: response ? "OK" : "Getting posts failed",
         response,
       });
     } catch (error) {
@@ -103,7 +104,6 @@ export const getNewPostsService = () =>
         offset: 0,
         order: [["createdAt", "DESC"]],
         limit: +process.env.LIMIT,
-
         include: [
           { model: db.Image, as: "images", attributes: ["image"] },
           {
@@ -111,13 +111,18 @@ export const getNewPostsService = () =>
             as: "attributes",
             attributes: ["price", "acreage", "published", "hashtag"],
           },
+          {
+            model: db.User,
+            as: "user",
+            attributes: ["name", "phone", "zalo", "avatar"],
+          },
         ],
-
         attributes: ["id", "title", "star", "createdAt"],
       });
+
       resolve({
         err: response ? 0 : 1,
-        msg: response ? "OK" : "Getting posts is  failed",
+        msg: response ? "OK" : "Getting posts failed",
         response,
       });
     } catch (error) {
@@ -134,15 +139,11 @@ export const createNewPostsService = async (body, userId) => {
     const hashtag = `#${Math.floor(Math.random() * Math.pow(10, 6))}`;
     const currentDate = generateDate();
 
-    // Tạo code và kiểm tra province
     const provinceCode = body.province?.includes("Thành phố")
       ? generateCode(body?.province?.replace("Thành phố", ""))
       : generateCode(body?.province?.replace("Tỉnh", ""));
 
-    // Tìm hoặc tạo province mới
-    let province = await db.Province.findOne({
-      where: { code: provinceCode },
-    });
+    let province = await db.Province.findOne({ where: { code: provinceCode } });
 
     if (!province) {
       province = await db.Province.create({
@@ -166,7 +167,7 @@ export const createNewPostsService = async (body, userId) => {
       imagesId,
       areaCode: body.areaCode || null,
       priceCode: body.priceCode,
-      provinceCode, // lấy code từ trên
+      provinceCode,
       priceNumber: body.priceNumber,
       areaNumber: body.areaNumber,
     });
@@ -198,11 +199,8 @@ export const createNewPostsService = async (body, userId) => {
       expired: currentDate.expireDate,
     });
 
-    // Tạo label nếu chưa có
     await db.Label.findOrCreate({
-      where: {
-        code: labelCode,
-      },
+      where: { code: labelCode },
       defaults: {
         code: labelCode,
         value: body?.label,
@@ -227,6 +225,7 @@ export const getPostsServiceLimitAdmin = (page, id, query) =>
         ...query,
         userId: id,
       };
+
       const response = await db.Post.findAndCountAll({
         where: queries,
         raw: true,
@@ -234,7 +233,6 @@ export const getPostsServiceLimitAdmin = (page, id, query) =>
         offset: offset * +process.env.LIMIT,
         limit: +process.env.LIMIT,
         order: [["createdAt", "DESC"]],
-
         include: [
           { model: db.Image, as: "images", attributes: ["image"] },
           {
@@ -245,19 +243,18 @@ export const getPostsServiceLimitAdmin = (page, id, query) =>
           {
             model: db.User,
             as: "user",
-            attributes: ["name", "phone", "zalo"],
+            attributes: ["name", "phone", "zalo", "avatar"],
           },
           {
             model: db.Overview,
             as: "overview",
           },
         ],
-
-        // attributes: ["id", "title", "star", "address", "description"],
       });
+
       resolve({
         err: response ? 0 : 1,
-        msg: response ? "OK" : "Getting posts is  failed",
+        msg: response ? "OK" : "Getting posts failed",
         response,
       });
     } catch (error) {
@@ -271,15 +268,11 @@ export const updatePostService = async (body) => {
     const labelCode = generateCode(body.label);
     const currentDate = generateDate();
 
-    // Tạo code và kiểm tra province
     const provinceCode = body.province?.includes("Thành phố")
       ? generateCode(body?.province?.replace("Thành phố", ""))
       : generateCode(body?.province?.replace("Tỉnh", ""));
 
-    // Tìm hoặc tạo province mới
-    let province = await db.Province.findOne({
-      where: { code: provinceCode },
-    });
+    let province = await db.Province.findOne({ where: { code: provinceCode } });
 
     if (!province) {
       province = await db.Province.create({
@@ -290,8 +283,7 @@ export const updatePostService = async (body) => {
       });
     }
 
-    // Cập nhật bảng Post
-    const postUpdate = await db.Post.update(
+    await db.Post.update(
       {
         title: body.title || null,
         labelCode,
@@ -308,7 +300,6 @@ export const updatePostService = async (body) => {
       { where: { id: postId } }
     );
 
-    // Cập nhật bảng Attribute
     await db.Attribute.update(
       {
         price:
@@ -316,12 +307,10 @@ export const updatePostService = async (body) => {
             ? `${body?.priceNumber * 1000000}đồng/tháng`
             : `${body?.priceNumber}triệu/tháng`,
         acreage: `${body?.areaNumber}m²`,
-        // Giữ nguyên published và hashtag nếu không thay đổi
       },
       { where: { id: attributesId } }
     );
 
-    // Cập nhật bảng Image
     await db.Image.update(
       {
         image: JSON.stringify(body.images),
@@ -329,22 +318,17 @@ export const updatePostService = async (body) => {
       { where: { id: imagesId } }
     );
 
-    // Cập nhật bảng Overview
     await db.Overview.update(
       {
         area: body?.label,
         type: body?.category,
         target: body?.target,
-        // giữ nguyên created & expired nếu không thay đổi
       },
       { where: { id: overviewId } }
     );
 
-    // Tạo label nếu chưa có
     await db.Label.findOrCreate({
-      where: {
-        code: labelCode,
-      },
+      where: { code: labelCode },
       defaults: {
         code: labelCode,
         value: body?.label,
@@ -368,7 +352,7 @@ export const deletePost = (postId) =>
       });
       resolve({
         err: response > 0 ? 0 : 1,
-        msg: response > 0 ? "Deleted" : "No posts delete",
+        msg: response > 0 ? "Deleted" : "No posts deleted",
       });
     } catch (error) {
       reject(error);

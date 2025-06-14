@@ -1,0 +1,10 @@
+import express from "express";
+import * as controllers from "../controllers/favorite.js";
+import verifyToken from "../middle/verifyToken.js";
+const router = express.Router();
+router.use(verifyToken);
+router.post("/add", controllers.addFavorite);
+router.delete("/remove", controllers.removeFavorite);
+router.get("/my-favorites", controllers.getFavoritesByUser);
+router.get("/limit", controllers.getFavoritesLimit);
+export default router;

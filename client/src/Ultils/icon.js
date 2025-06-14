@@ -20,6 +20,7 @@ import { MdLocationPin } from "react-icons/md";
 import { TiStopwatch } from "react-icons/ti";
 import { LiaSearchLocationSolid } from "react-icons/lia";
 import { FaPhoneAlt } from "react-icons/fa";
+import { IoMailUnreadOutline } from "react-icons/io5";
 const icons = {
   CiCirclePlus,
   GrFormNext,
@@ -46,5 +47,6 @@ const icons = {
   TiStopwatch,
   LiaSearchLocationSolid,
   FaPhoneAlt,
+  IoMailUnreadOutline,
 };
 export default icons;

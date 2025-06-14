@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@react-google-maps/api": "^2.20.6",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -10,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
     "buffer": "^6.0.3",
+    "firebase": "^11.9.1",
     "framer-motion": "^12.12.2",
     "google-map-react": "^2.2.5",
     "moment": "^2.30.1",

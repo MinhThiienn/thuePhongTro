@@ -26,3 +26,17 @@ export const apiUpdateUser = (payload) =>
       reject(error);
     }
   });
+
+export const apiVerifyPassword = (password) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "post",
+        url: "/api/v1/user/verify-password",
+        data: { password },
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });

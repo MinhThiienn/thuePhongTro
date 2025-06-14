@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { InputForm, Button } from "../../Components";
+import React, { useState, useRef } from "react";
 import {
   FiPhone,
   FiMail,
@@ -7,26 +6,63 @@ import {
   FiMessageSquare,
   FiUser,
 } from "react-icons/fi";
+import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
+
 const ContactUser = () => {
   const [payload, setPayload] = useState({
     name: "",
     phone: "",
     content: "",
   });
-  const handleSubmit = () => {
-    Swal.fire(
-      `Cảm ơn ${payload.name ? payload.name : ""}`,
-      "Phản hồi của bạn đã được chúng tôi ghi nhận",
-      "success"
-    ).then(() => {
-      setPayload({
-        name: "",
-        phone: "",
-        content: "",
+
+  const [loading, setLoading] = useState(false);
+
+  const formRef = useRef();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!payload.name || !payload.phone || !payload.content) {
+      Swal.fire({
+        icon: "warning",
+        title: "Thiếu thông tin",
+        text: "Vui lòng nhập đầy đủ thông tin!",
       });
-    });
+      return;
+    }
+
+    setLoading(true);
+    emailjs
+      .send(
+        "service_b1h6mv7",
+        "template_wic2269",
+        {
+          name: payload.name,
+          phone: payload.phone,
+          message: payload.content,
+          time: new Date().toLocaleString(),
+        },
+        "3NCIm0tLv5JzxRqOF"
+      )
+      .then(() => {
+        setLoading(false);
+        Swal.fire({
+          icon: "success",
+          title: "Thành công",
+          text: "Gửi liên hệ thành công!",
+        });
+        setPayload({ name: "", phone: "", content: "" });
+      })
+      .catch((error) => {
+        setLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Thất bại",
+          text: "Gửi liên hệ thất bại: " + error.text,
+        });
+      });
   };
+
   return (
     <div className="w-full max-w-6xl mx-auto p-6">
       <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">
@@ -59,64 +95,82 @@ const ContactUser = () => {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-8">
+        <form
+          ref={formRef}
+          onSubmit={handleSubmit}
+          className="bg-white rounded-3xl shadow-xl p-8 flex flex-col gap-6"
+        >
           <h2 className="text-2xl font-semibold mb-6 text-gray-700">
             Gửi liên hệ trực tiếp
           </h2>
 
-          <div className="flex flex-col gap-6">
-            <InputForm
-              label={
-                <span className="flex items-center gap-2">
-                  <FiUser /> HỌ VÀ TÊN CỦA BẠN
-                </span>
-              }
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+              <FiUser /> HỌ VÀ TÊN CỦA BẠN
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Nhập họ và tên"
               value={payload.name}
-              setValue={setPayload}
-              keyPayload="name"
-            />
-            <InputForm
-              label={
-                <span className="flex items-center gap-2">
-                  <FiPhone /> SỐ ĐIỆN THOẠI
-                </span>
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, name: e.target.value }))
               }
-              setValue={setPayload}
-              keyPayload="phone"
-              value={payload.phone}
-            />
-
-            <div className="flex flex-col gap-1">
-              <label
-                htmlFor="desc"
-                className="text-sm font-medium text-gray-600"
-              >
-                <span className="flex items-center gap-2">
-                  <FiMessageSquare /> NỘI DUNG MÔ TẢ
-                </span>
-              </label>
-              <textarea
-                id="desc"
-                rows="4"
-                className="bg-[#f1f5f9] p-3 rounded-lg w-full outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all"
-                placeholder="Nhập nội dung mô tả chi tiết..."
-                value={payload.content}
-                onChange={(e) =>
-                  setPayload((prev) => ({ ...prev, content: e.target.value }))
-                }
-                name="content"
-              ></textarea>
-            </div>
-
-            <Button
-              text="📨 Gửi liên hệ"
-              bgColor="bg-indigo-600 hover:bg-indigo-700"
-              textColor="text-white"
-              fullWidth
-              onClick={handleSubmit}
+              className="bg-[#f1f5f9] p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all"
+              disabled={loading}
             />
           </div>
-        </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+              <FiPhone /> SỐ ĐIỆN THOẠI
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Nhập số điện thoại"
+              value={payload.phone}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, phone: e.target.value }))
+              }
+              className="bg-[#f1f5f9] p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all"
+              disabled={loading}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label
+              htmlFor="desc"
+              className="flex items-center gap-2 text-sm font-medium text-gray-600"
+            >
+              <FiMessageSquare /> NỘI DUNG MÔ TẢ
+            </label>
+            <textarea
+              id="desc"
+              name="content"
+              rows="4"
+              placeholder="Nhập nội dung mô tả chi tiết..."
+              value={payload.content}
+              onChange={(e) =>
+                setPayload((prev) => ({ ...prev, content: e.target.value }))
+              }
+              className="bg-[#f1f5f9] p-3 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 text-sm transition-all"
+              disabled={loading}
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 rounded-lg text-sm font-semibold transition-colors ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700 text-white"
+            }`}
+          >
+            {loading ? "Đang gửi..." : "📨 Gửi liên hệ"}
+          </button>
+        </form>
       </div>
     </div>
   );

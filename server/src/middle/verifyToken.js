@@ -20,7 +20,7 @@ const verifyToken = (req, res, next) => {
       });
     }
 
-    req.user = user; // Lưu thông tin user vào req để middleware sau dùng
+    req.user = user;
     next();
   });
 };

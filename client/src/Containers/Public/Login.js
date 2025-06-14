@@ -5,6 +5,7 @@ import * as actions from "../../Store/Action";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import validate from "../../Ultils/Common/validateField";
+import { path } from "../../Ultils/constant";
 const Login = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const Login = () => {
     password: "",
     name: "",
   });
+
   useEffect(() => {
     setIsRegister(location.state?.flag);
   }, [location.state?.flag]);
@@ -26,7 +28,6 @@ const Login = () => {
   }, [isLoggedIn, navigate]);
 
   useEffect(() => {
-    // Chỉ hiển thị thông báo nếu có lỗi và không phải là thông báo trống
     if (msg && msg.trim()) {
       Swal.fire("Oops!", msg, "error");
     }
@@ -106,9 +107,12 @@ const Login = () => {
           ) : (
             <>
               {" "}
-              <small className=" text-blue-600 hover:text-red-600 cursor-pointer">
+              {/* <small
+                className=" text-blue-600 hover:text-red-600 cursor-pointer"
+                onClick={() => navigate(path.FORGOT_PASSWORD)}
+              >
                 Bạn quên mật khẩu
-              </small>
+              </small> */}
               <small
                 className=" text-blue-600 hover:text-red-600 cursor-pointer"
                 onClick={() => {

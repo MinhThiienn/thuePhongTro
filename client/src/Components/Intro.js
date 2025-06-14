@@ -71,7 +71,6 @@ const Intro = () => {
         px="px-8"
         onClick={() => {
           navigate("/he-thong/tao-moi-bai-dang");
-          // window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       />
 

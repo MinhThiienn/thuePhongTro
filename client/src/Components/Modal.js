@@ -98,7 +98,7 @@ const Modal = ({
     let arrMinMax =
       percent1 === percent2 && percent1 === 100
         ? [convert100toTarget(min), 999999999]
-        : [(convert100toTarget(min), convert100toTarget(max))];
+        : [convert100toTarget(min), convert100toTarget(max)];
     handleSubmit(
       {
         [`${name}Number`]: arrMinMax,

@@ -7,6 +7,7 @@ import { Intro, Contact } from "../../Components";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { path } from "../../Ultils/constant";
+import Footer from "./Footer";
 
 const Home = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -14,6 +15,7 @@ const Home = () => {
   const navRef = useRef();
   useEffect(() => {
     const handleScroll = (e) => {
+      if (!navRef.current) return;
       if (window.pageYOffset >= 134) {
         navRef.current.style.cssText = `
       position: fixed;
@@ -49,7 +51,7 @@ const Home = () => {
       </div>
       <Intro />
       <Contact />
-      <div className=" h-[500px]"></div>
+      <Footer />
     </div>
   );
 };

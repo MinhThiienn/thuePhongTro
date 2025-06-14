@@ -6,6 +6,7 @@ import connectDatabase from "./src/config/connectDB";
 import { dataPrices, dataArea } from "./ultis/data";
 import initRoutes from "./src/routes";
 import generateDate from "./ultis/generateDate";
+
 const app = express();
 
 app.use(
@@ -23,5 +24,5 @@ connectDatabase();
 const port = process.env.PORT || 8888;
 
 const server = app.listen(port, () => {
-  console.log(`Server running on the port ${server.address().port}`);
+  console.log(`Server running on the port ${port}`);
 });

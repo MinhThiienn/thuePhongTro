@@ -38,9 +38,9 @@ const ListPost = ({ categoryCode }) => {
     <div className="w-full border p-4 bg-white shadow-lg rounded-lg">
       <div className="flex items-center justify-between mb-4  pb-2">
         <h4 className="text-2xl font-bold text-gray-800">Danh sách tin đăng</h4>
-        <span className="text-sm text-gray-500 italic">
+        {/* <span className="text-sm text-gray-500 italic">
           Cập nhật: 12:05 25/08/2025
-        </span>
+        </span> */}
       </div>
 
       <div className="flex items-center gap-4 mb-4">

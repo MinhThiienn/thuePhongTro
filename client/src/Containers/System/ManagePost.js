@@ -6,6 +6,7 @@ import { Button, UpdatePost } from "../../Components";
 import { apiDeletePost } from "../../Services/post";
 import Swal from "sweetalert2";
 import { text } from "../../Ultils/dataContact";
+
 const ManagePost = () => {
   const { postsOfUser, dataEdit } = useSelector((state) => state.post);
   const [updateData, setUpdateData] = useState(false);
@@ -13,20 +14,72 @@ const ManagePost = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [post, setPost] = useState([]);
   const [status, setStatus] = useState("");
-  useEffect(() => {
-    !dataEdit && dispatch(actions.getPostsLimitAdmin());
-  }, [dataEdit, updateData]);
 
   const checkStatus = (dateString) =>
     moment(dateString, process.env.REACT_APP_FORMAT_DATE).isSameOrAfter(
       new Date().toDateString()
     );
+
+  const daysSinceExpired = (expiredDateStr) => {
+    const expiredDate = moment(
+      expiredDateStr,
+      process.env.REACT_APP_FORMAT_DATE
+    );
+    const today = moment();
+    return today.diff(expiredDate, "days");
+  };
+
+  useEffect(() => {
+    if (!dataEdit) {
+      dispatch(actions.getPostsLimitAdmin());
+    }
+  }, [dataEdit, updateData]);
+
+  useEffect(() => {
+    if (status === 1) {
+      const activePost = postsOfUser.filter((item) =>
+        checkStatus(item?.overview?.expired?.split(" ")[3])
+      );
+      setPost(activePost);
+    } else if (status === 2) {
+      const notActivePost = postsOfUser.filter(
+        (item) => !checkStatus(item?.overview?.expired?.split(" ")[3])
+      );
+      setPost(notActivePost);
+    } else {
+      setPost(postsOfUser);
+    }
+  }, [status, postsOfUser]);
+
   useEffect(() => {
     setPost(postsOfUser);
+
+    const expiredToDelete = postsOfUser.filter(
+      (item) =>
+        !checkStatus(item?.overview?.expired?.split(" ")[3]) &&
+        daysSinceExpired(item?.overview?.expired?.split(" ")[3]) >= 2
+    );
+
+    if (expiredToDelete.length > 0) {
+      const deletePosts = async () => {
+        try {
+          await Promise.all(
+            expiredToDelete.map((item) => apiDeletePost(item.id))
+          );
+          setUpdateData((prev) => !prev);
+          console.log(
+            `${expiredToDelete.length} bài đã bị xóa do hết hạn > 2 ngày.`
+          );
+        } catch (error) {
+          console.error("Xóa tin hết hạn lỗi:", error);
+        }
+      };
+      deletePosts();
+    }
   }, [postsOfUser]);
 
   useEffect(() => {
-    !dataEdit && setIsEdit(false);
+    if (!dataEdit) setIsEdit(false);
   }, [dataEdit]);
 
   const handleDeletePost = async (postId) => {
@@ -74,21 +127,12 @@ const ManagePost = () => {
       }
     }
   };
-  useEffect(() => {
-    if (status === 1) {
-      const activePost = postsOfUser.filter((item) =>
-        checkStatus(item?.overview?.expired?.split(" ")[3])
-      );
-      setPost(activePost);
-    } else if (status === 2) {
-      const notActivePost = postsOfUser.filter(
-        (item) => !checkStatus(item?.overview?.expired?.split(" ")[3])
-      );
-      setPost(notActivePost);
-    } else if (!status) {
-      setPost(postsOfUser);
-    }
-  }, [status]);
+
+  const expiringPosts = postsOfUser.filter(
+    (item) =>
+      !checkStatus(item?.overview?.expired?.split(" ")[3]) &&
+      daysSinceExpired(item?.overview?.expired?.split(" ")[3]) < 2
+  );
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-start py-10 px-4">
@@ -96,6 +140,13 @@ const ManagePost = () => {
         <h1 className="text-3xl font-bold text-gray-800 mb-8 pb-4 border-b border-gray-300">
           Quản lí tin đăng
         </h1>
+
+        {expiringPosts.length > 0 && (
+          <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-md">
+            <strong>⚠️ Cảnh báo:</strong> Có {expiringPosts.length} tin đã hết
+            hạn và sẽ bị xóa sau 2 ngày.
+          </div>
+        )}
 
         <div className="mb-6">
           <select
@@ -131,78 +182,83 @@ const ManagePost = () => {
                   </td>
                 </tr>
               ) : (
-                post.map((item) => (
-                  <tr key={item.id} className="border-b hover:bg-gray-50">
-                    <td className="text-center p-2">{item?.overview?.code}</td>
-                    <td className="p-2 flex justify-center">
-                      <img
-                        src={JSON.parse(item?.images?.image)[0] || ""}
-                        alt="avatar"
-                        className="w-14 h-14 object-cover rounded-md"
-                      />
-                    </td>
-                    <td
-                      className="p-2 max-w-[200px] truncate text-center"
-                      title={item?.title}
-                    >
-                      {item?.title}
-                    </td>
-                    <td className="text-center p-2">
-                      {item?.attributes?.price}
-                    </td>
-                    <td className="text-center p-2">
-                      {item?.overview?.created}
-                    </td>
-                    <td className="text-center p-2">
-                      {item?.overview?.expired}
-                    </td>
-                    <td
-                      className={`text-center p-2 font-semibold ${
-                        checkStatus(item?.overview?.expired?.split(" ")[3])
-                          ? "text-green-600"
-                          : "text-red-500"
-                      }`}
-                    >
-                      {checkStatus(item?.overview?.expired?.split(" ")[3])
-                        ? "Đang hoạt động"
-                        : "Hết hạn"}
-                    </td>
-                    <td className="text-center p-2">
-                      <div className="flex justify-center gap-2 flex-wrap">
-                        <Button
-                          text={"Sửa"}
-                          bgColor={"bg-green-600"}
-                          textColor="text-white"
-                          className="px-3 py-1 rounded hover:bg-green-700"
-                          onClick={() => {
-                            dispatch(actions.editPost(item));
-                            setIsEdit(true);
-                          }}
+                post.map((item) => {
+                  const expiredDay = item?.overview?.expired?.split(" ")[3];
+                  const isActive = checkStatus(expiredDay);
+                  const daysPassed = daysSinceExpired(expiredDay);
+
+                  return (
+                    <tr key={item.id} className="border-b hover:bg-gray-50">
+                      <td className="text-center p-2">
+                        {item?.overview?.code}
+                      </td>
+                      <td className="p-2 flex justify-center">
+                        <img
+                          src={JSON.parse(item?.images?.image)[0] || ""}
+                          alt="avatar"
+                          className="w-14 h-14 object-cover rounded-md"
                         />
-                        <Button
-                          text={"Xóa"}
-                          bgColor={"bg-red-600"}
-                          textColor="text-white"
-                          className="px-3 py-1 rounded hover:bg-red-700"
-                          onClick={() => handleDeletePost(item.id)}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td
+                        className="p-2 max-w-[200px] truncate text-center"
+                        title={item?.title}
+                      >
+                        {item?.title}
+                      </td>
+                      <td className="text-center p-2">
+                        {item?.attributes?.price}
+                      </td>
+                      <td className="text-center p-2">
+                        {item?.overview?.created}
+                      </td>
+                      <td className="text-center p-2">
+                        {item?.overview?.expired}
+                      </td>
+                      <td
+                        className={`text-center p-2 font-semibold ${
+                          isActive
+                            ? "text-green-600"
+                            : daysPassed < 2
+                            ? "text-yellow-500"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {isActive
+                          ? "Đang hoạt động"
+                          : daysPassed < 2
+                          ? `Sắp xóa (còn ${2 - daysPassed} ngày)`
+                          : "Hết hạn"}
+                      </td>
+                      <td className="text-center p-2">
+                        <div className="flex justify-center gap-2 flex-wrap">
+                          <Button
+                            text={"Sửa"}
+                            bgColor={"bg-green-600"}
+                            textColor="text-white"
+                            className="px-3 py-1 rounded hover:bg-green-700"
+                            onClick={() => {
+                              dispatch(actions.editPost(item));
+                              setIsEdit(true);
+                            }}
+                          />
+                          <Button
+                            text={"Xóa"}
+                            bgColor={"bg-red-600"}
+                            textColor="text-white"
+                            className="px-3 py-1 rounded hover:bg-red-700"
+                            onClick={() => handleDeletePost(item.id)}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
         </div>
 
-        <div className="flex justify-center mt-8 px-4">
-          <img
-            src={text.image}
-            alt="Ảnh quản lý tin đăng"
-            className="rounded-3xl max-w-full max-h-[400px] object-contain"
-          />
-        </div>
-
+        {/* Popup sửa tin */}
         {isEdit && <UpdatePost setIsEdit={setIsEdit} />}
       </div>
     </div>

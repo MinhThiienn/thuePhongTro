@@ -12,7 +12,7 @@ import * as actions from "../../Store/Action";
 const Rental = () => {
   const { categories, prices, areas } = useSelector((state) => state.app);
   const location = useLocation();
-  const dispatch = useDispatch();
+
   const [categoryCurrent, setcategoryCurrent] = useState("");
 
   const [categoryCode, setCategoryCode] = useState("null");
@@ -26,7 +26,6 @@ const Rental = () => {
     }
   }, [location]);
 
-  console.log(categoryCode);
   return (
     <div className=" w-full flex flex-col gap-3 ">
       <div>

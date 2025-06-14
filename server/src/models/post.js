@@ -34,6 +34,12 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "code",
         as: "labelData",
       });
+      Post.belongsToMany(models.User, {
+        through: models.Favorite,
+        foreignKey: "postId",
+        otherKey: "userId",
+        as: "favoritedByUsers",
+      });
     }
   }
   Post.init(

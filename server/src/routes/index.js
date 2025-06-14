@@ -6,6 +6,8 @@ import pricesRouter from "./price";
 import areaRouter from "./area";
 import provinceRouter from "./province";
 import CurrentUser from "./user";
+import favoriteRouter from "./favorite";
+
 const initRoutes = (app) => {
   app.use("/api/v1/auth", authRouter);
   app.use("/api/v1/insert", insertRouter);
@@ -15,8 +17,7 @@ const initRoutes = (app) => {
   app.use("/api/v1/area", areaRouter);
   app.use("/api/v1/province", provinceRouter);
   app.use("/api/v1/user", CurrentUser);
-
-  // Đặt cuối cùng để bắt các request không hợp lệ
+  app.use("/api/v1/favorite", favoriteRouter);
   app.use((req, res) => {
     res.status(404).send("Route not found");
   });

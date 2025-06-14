@@ -34,9 +34,9 @@ const Map = ({ address }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let timeoutId;
-
     if (address) return;
+
+    let timeoutId;
 
     if (!navigator.geolocation) {
       setCoords(defaultCenter);
@@ -51,7 +51,7 @@ const Map = ({ address }) => {
         setError(new Error("Timeout khi lấy vị trí"));
         setLoading(false);
       }
-    }, 10000); // Timeout sau 10s
+    }, 10000);
 
     navigator.geolocation.getCurrentPosition(
       (position) => {

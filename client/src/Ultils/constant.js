@@ -16,6 +16,11 @@ export const path = {
   CONTACT: "lien-he",
   DETAIL: "/chi-tiet/",
   DETAIL_ALL: "chi-tiet/*",
+  INSTRUCT: "huong-dan-dang-tin",
+  PRIVACY: "chinh-sach-bao-mat",
+  FAQ: "cau-hoi-thuong-gap",
+  FORGOT_PASSWORD: "/forgot-password",
+  FAVORITE: "yeu-thich",
 };
 
 export const text = {

@@ -35,7 +35,6 @@ const Address = ({ setpayload, invalidFields, setInvalidFields }) => {
     setDistrict(foundDistrict || null);
   }, [districts, dataEdit]);
 
-  // Lấy danh sách tỉnh
   useEffect(() => {
     const fetchProvinces = async () => {
       const response = await apiGetPublicProvince();
@@ -50,7 +49,6 @@ const Address = ({ setpayload, invalidFields, setInvalidFields }) => {
     fetchProvinces();
   }, []);
 
-  // Lấy danh sách quận khi chọn tỉnh
   useEffect(() => {
     const fetchDistricts = async () => {
       if (!province) {
@@ -69,7 +67,7 @@ const Address = ({ setpayload, invalidFields, setInvalidFields }) => {
     };
 
     fetchDistricts();
-    setDistrict(null); // Reset quận khi đổi tỉnh
+    setDistrict(null);
   }, [province]);
 
   useEffect(() => {

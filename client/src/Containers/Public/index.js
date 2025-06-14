@@ -13,3 +13,9 @@ export { default as SearchDetail } from "./SearchDetail";
 
 export { default as Select } from "./Select";
 export { default as ContactUser } from "./ContactUser";
+export { default as Footer } from "./Footer";
+export { default as Instruct } from "./Instruct";
+export { default as PrivacyPolicy } from "./PrivacyPolicy";
+export { default as FAQ } from "./FAQ";
+export { default as ForgotPassword } from "./ForgotPassword";
+export { default as Farvorite } from "./Farvorite";

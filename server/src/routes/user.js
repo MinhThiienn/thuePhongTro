@@ -6,5 +6,5 @@ const router = express.Router();
 router.use(verifyToken);
 router.get("/get-currentUser", userController.getCurrentUser);
 router.put("/", userController.updateUser);
-
+router.post("/verify-password", userController.verifyPassword);
 export default router;

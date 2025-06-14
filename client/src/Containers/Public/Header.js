@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../../Store/Action";
 import menuManage from "../../Ultils/menuManage";
-const { CiCirclePlus, AiOutlineLogout, IoIosArrowDown, IoIosArrowUp } = icons;
+const { CiCirclePlus, AiOutlineLogout, IoIosArrowDown, IoIosArrowUp, GoHeart } =
+  icons;
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,6 +24,23 @@ const Header = () => {
   useEffect(() => {
     headerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [searchParams.get("page")]);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        isShowMenu &&
+        headerRef.current &&
+        !headerRef.current.contains(e.target)
+      ) {
+        setisShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isShowMenu]);
+
   return (
     <div ref={headerRef} className="w-3/5">
       {" "}
@@ -57,8 +75,16 @@ const Header = () => {
 
           {isLoggedIn && (
             <div className="flex items-center gap-3 relative">
-              {" "}
               <User />
+
+              <button
+                className="flex items-center gap-1 px-4 py-2 rounded-md bg-pink-500 hover:bg-pink-600 text-white font-medium shadow-md"
+                onClick={() => navigate(path.FAVORITE)}
+              >
+                <GoHeart className="text-xl" />
+                Yêu thích
+              </button>
+
               <Button
                 text="Quản lí tài khoản"
                 textColor="text-white"
@@ -67,6 +93,7 @@ const Header = () => {
                 IcAfter={isShowMenu ? IoIosArrowUp : IoIosArrowDown}
                 onClick={() => setisShowMenu((prev) => !prev)}
               />
+
               {isShowMenu && (
                 <div className="absolute min-w-200 top-full right-0 bg-white shadow-md rounded-md p-4 flex flex-col ">
                   {menuManage.map((item) => {
@@ -85,7 +112,8 @@ const Header = () => {
                   <span
                     className="cursor-pointer hover:text-orange-500 text-blue-500 border-gray-200 py-2 flex items-center gap-2"
                     onClick={() => {
-                      dispatch(action.logout(), setisShowMenu(false));
+                      dispatch(action.logout());
+                      setisShowMenu(false);
                     }}
                   >
                     <AiOutlineLogout />

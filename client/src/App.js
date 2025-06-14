@@ -7,6 +7,11 @@ import {
   Rental,
   SearchDetail,
   ContactUser,
+  Instruct,
+  PrivacyPolicy,
+  FAQ,
+  ForgotPassword,
+  Farvorite,
 } from "./Containers/Public";
 import { path } from "./Ultils/constant";
 import {
@@ -22,7 +27,10 @@ import { ScrollToTop } from "./Components";
 function App() {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const { currentUser } = useSelector((state) => state.user);
+  // const { currentUser } = useSelector((state) => state.user);
+  useEffect(() => {
+    dispatch(actions.getFavorites());
+  }, [dispatch]);
   useEffect(() => {
     setTimeout(() => {
       isLoggedIn && dispatch(actions.getCurrentUser());
@@ -47,6 +55,12 @@ function App() {
           <Route path={path.NHA_CHO_THUE} element={<Rental />} />
           <Route path={path.SEARCH} element={<SearchDetail />} />
           <Route path={path.CONTACT} element={<ContactUser />} />
+          <Route path={path.INSTRUCT} element={<Instruct />} />
+          <Route path={path.PRIVACY} element={<PrivacyPolicy />} />
+          <Route path={path.FAQ} element={<FAQ />} />
+          <Route path={path.FAVORITE} element={<Farvorite />} />
+          {/* <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} /> */}
+
           <Route
             path={path.DETAL_POST__TITLE__POSTID}
             element={<DetailPost />}
