@@ -69,7 +69,7 @@ const Item = ({
     }
 
     if (isFavorite) {
-      dispatch(actions.removeFavorite(id));
+      dispatch(actions.removeFavorite(id)); // <- truyền id thay vì favoriteId
     } else {
       dispatch(actions.addFavorite(id));
     }
@@ -177,17 +177,6 @@ const Item = ({
             >
               Nhắn Zalo
             </a>
-
-            <button
-              onClick={(e) => handleToggleFavorite(e)}
-              className={`px-3 py-1 rounded-md transition ${
-                isFavorite
-                  ? "bg-red-500 text-white"
-                  : "border border-gray-400 text-gray-500"
-              }`}
-            >
-              {isFavorite ? "Đã Thích" : "Thích"}
-            </button>
           </div>
         </div>
       </div>
@@ -195,4 +184,4 @@ const Item = ({
   );
 };
 
-export default memo(Item);
+export default Item;

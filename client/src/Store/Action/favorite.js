@@ -95,18 +95,20 @@ export const removeFavorite = (postId) => async (dispatch) => {
     if (response?.data.err === 0) {
       dispatch({
         type: actionTypes.REMOVE_FAVORITE,
-        favoriteId: postId,
-        msg: "Xóa bài viết yêu thích thành công",
+        postId,
+        msg: "Xóa bài yêu thích thành công",
       });
     } else {
       dispatch({
         type: actionTypes.REMOVE_FAVORITE,
-        msg: response.data.msg || "Xóa bài viết yêu thích thất bại",
+        postId,
+        msg: response.data.msg || "Xóa bài yêu thích thất bại",
       });
     }
   } catch (error) {
     dispatch({
       type: actionTypes.REMOVE_FAVORITE,
+      postId,
       msg: "Lỗi kết nối server",
     });
   }

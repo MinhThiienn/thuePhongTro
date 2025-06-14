@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RelatedPost, Item } from "../../Components";
-import Page from "./Page";
-import ItemSidebar from "../../Components/itemSidebar";
 import { memo } from "react";
 import * as actions from "../../Store/Action";
 import { useSearchParams } from "react-router-dom";
 import PageFavorite from "./PageFavorite";
 const Favorite = () => {
   const dispatch = useDispatch();
-  const { prices, areas } = useSelector((state) => state.app);
   const { favorites } = useSelector((state) => state.favorite);
   const [searchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = +process.env.REACT_APP_LIMIT || 6;
-  console.log(favorites);
+
   useEffect(() => {
     dispatch(actions.getFavorites());
   }, [dispatch]);
@@ -23,7 +20,7 @@ const Favorite = () => {
     const pageParam = +searchParams.get("page");
     if (pageParam && pageParam !== currentPage) setCurrentPage(pageParam);
     if (!pageParam) setCurrentPage(1);
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
 
   const totalCount = favorites.length;
   const start = (currentPage - 1) * limit;
@@ -49,8 +46,12 @@ const Favorite = () => {
                   id={post.id}
                   address={post.address}
                   attributes={post.attributes}
-                  description={JSON.parse(post.description)}
-                  images={JSON.parse(post.images?.image)}
+                  description={
+                    post.description ? JSON.parse(post.description).text : ""
+                  }
+                  images={
+                    post.images?.image ? JSON.parse(post.images.image) : []
+                  }
                   star={+post.star}
                   title={post.title}
                   user={post.user}
@@ -75,4 +76,4 @@ const Favorite = () => {
   );
 };
 
-export default memo(Favorite);
+export default Favorite;

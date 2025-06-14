@@ -26,13 +26,12 @@ const favoriteReducer = (state = initState, action) => {
       };
 
     case actionTypes.REMOVE_FAVORITE:
-      const filteredFavorites = state.favorites.filter(
-        (fav) => fav.id !== action.favoriteId
-      );
       return {
         ...state,
-        favorites: filteredFavorites,
-        count: filteredFavorites.length,
+        favorites: state.favorites.filter(
+          (fav) => fav.postId !== action.postId
+        ),
+        count: state.favorites.length - 1,
         msg: action.msg || "",
       };
 
