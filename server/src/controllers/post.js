@@ -14,10 +14,8 @@ export const getPosts = async (req, res) => {
 
 export const getPostsLimit = async (req, res) => {
   try {
-    // Parse query thành cleanedQuery
     const cleanedQuery = {};
     for (const key in req.query) {
-      // Match key dạng order[0], order[1]
       const arrayMatch = key.match(/^(\w+)\[(\d+)\]$/);
       if (arrayMatch) {
         const [_, baseKey, index] = arrayMatch;
@@ -26,7 +24,6 @@ export const getPostsLimit = async (req, res) => {
         continue;
       }
 
-      // Match key dạng priceNumber[], areaNumber[]
       const cleanKey = key.endsWith("[]") ? key.slice(0, -2) : key;
       const value = req.query[key];
 
@@ -37,10 +34,8 @@ export const getPostsLimit = async (req, res) => {
       }
     }
 
-    // Tách các biến cần thiết từ query
     const { page, priceNumber, areaNumber, order, ...restQuery } = cleanedQuery;
 
-    // Parse range giá/diện tích
     const parseRange = (val) => {
       if (!val) return null;
       if (Array.isArray(val)) return val.map(Number);
@@ -51,7 +46,6 @@ export const getPostsLimit = async (req, res) => {
     const priceRange = parseRange(priceNumber);
     const areaRange = parseRange(areaNumber);
 
-    // Gọi service
     const response = await getPostsService.getPostsServiceLimit(
       page,
       { ...restQuery, order },
@@ -101,7 +95,6 @@ export const createNewPost = async (req, res) => {
 };
 
 export const getPostsLimitAdmin = async (req, res) => {
-  // Clean query keys
   const cleanedQuery = {};
   for (const key in req.query) {
     const cleanKey = key.endsWith("[]") ? key.slice(0, -2) : key;
@@ -113,10 +106,9 @@ export const getPostsLimitAdmin = async (req, res) => {
     }
   }
 
-  // Lấy page, priceNumber, areaNumber từ cleanedQuery
   const { page, ...restQuery } = cleanedQuery;
   const { id } = req.user;
-  // Parse priceNumber, areaNumber nếu cần
+
   const parseRange = (val) => {
     if (!val) return null;
     if (Array.isArray(val)) return val.map(Number);

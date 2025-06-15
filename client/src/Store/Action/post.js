@@ -14,6 +14,7 @@ export const getPosts = () => async (dispatch) => {
       dispatch({
         type: actionTypes.GET_POSTS,
         posts: response.data.response,
+        count: response.data.response?.count,
       });
     } else {
       dispatch({

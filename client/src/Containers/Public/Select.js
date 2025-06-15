@@ -1,5 +1,4 @@
 import React, { memo } from "react";
-import item from "../../Components/item";
 
 const Select = ({
   label,
@@ -11,7 +10,6 @@ const Select = ({
   setInvalidFields,
 }) => {
   const handleErrorText = () => {
-    let textError = "";
     let nameInvalid = invalidFields?.find((item) => item.name === name);
     let addressInvalid = invalidFields?.find((item) => item.name === "address");
 

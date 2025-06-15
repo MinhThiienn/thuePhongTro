@@ -5,7 +5,6 @@ import * as actions from "../../Store/Action";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import validate from "../../Ultils/Common/validateField";
-import { path } from "../../Ultils/constant";
 const Login = () => {
   const location = useLocation();
   const dispatch = useDispatch();

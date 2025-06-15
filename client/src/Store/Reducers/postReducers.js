@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import actionTypes from "../Action/actionTypes";
 const initState = {
   posts: [],

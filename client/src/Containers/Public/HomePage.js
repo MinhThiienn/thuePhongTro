@@ -37,6 +37,7 @@ function HomePage() {
             title={"Xem theo diện tích"}
             type={"areaCode"}
           />
+          <RelatedPost />
           <RelatedPost newPost />
         </div>
       </div>

@@ -29,7 +29,11 @@ export const login = (payload) => async (dispatch) => {
     if (response?.data.err === 0) {
       dispatch({
         type: actionTypes.LOGIN_SUCCESS,
-        data: response.data.token,
+        data: {
+          phone: payload.phone,
+          isAdmin: !!response.data.isAdmin,
+          token: response.data?.token,
+        },
       });
     } else {
       dispatch({

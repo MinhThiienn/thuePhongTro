@@ -8,9 +8,9 @@ export const apiRegister = (payload) =>
         url: "/api/v1/auth/register",
         data: payload,
       });
-      resolve(response); // Gọi resolve khi có phản hồi thành công
+      resolve(response);
     } catch (error) {
-      reject(error); // Gọi reject nếu có lỗi
+      reject(error);
     }
   });
 
@@ -22,8 +22,8 @@ export const apiLogin = (payload) =>
         url: "/api/v1/auth/login",
         data: payload,
       });
-      resolve(response); // Gọi resolve khi có phản hồi thành công
+      resolve(response);
     } catch (error) {
-      reject(error); // Gọi reject nếu có lỗi
+      reject(error);
     }
   });

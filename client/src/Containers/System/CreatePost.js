@@ -42,9 +42,7 @@ const CreatePost = ({ isEdit }) => {
   const [isLoading, setisLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [invalidFields, setInvalidFields] = useState([]);
-  const { prices, areas, categories, provinces } = useSelector(
-    (state) => state.app
-  );
+  const { prices, areas, categories } = useSelector((state) => state.app);
   useEffect(() => {
     if (dataEdit) {
       let images = JSON.parse(dataEdit?.images?.image);
@@ -107,12 +105,13 @@ const CreatePost = ({ isEdit }) => {
         categories?.find((item) => item.code === payload?.categoryCode)?.value
       } ${payload?.address?.split(",")[1]}`,
     };
+
     const result = validate(finalPayload, setInvalidFields);
     if (result === 0) {
       if (dataEdit && isEdit) {
         finalPayload.postId = dataEdit?.id;
         finalPayload.attributesId = dataEdit?.attributesId;
-        finalPayload.images = dataEdit?.imagesId;
+        finalPayload.imagesId = dataEdit?.imagesId;
         finalPayload.overviewId = dataEdit?.overviewId;
         const responce = await apiUpdatePost(finalPayload);
         if (responce?.data.err === 0) {

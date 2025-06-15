@@ -26,11 +26,25 @@ module.exports = (sequelize, DataTypes) => {
       zalo: DataTypes.STRING,
       fbUrl: DataTypes.STRING,
       avatar: DataTypes.BLOB,
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      balance: {
+        type: DataTypes.FLOAT,
+        defaultValue: 0,
+      },
+      vipLevel: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      vipExpire: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
-    {
-      sequelize,
-      modelName: "User",
-    }
+    { sequelize, modelName: "User" }
   );
+
   return User;
 };

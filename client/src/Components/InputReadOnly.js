@@ -27,11 +27,11 @@ const InputReadOnly = ({ label, value, direction, editPhone }) => {
           className="border border-gray-300 rounded-md bg-gray-100 p-2 outline-none cursor-default w-full text-gray-800"
           value={value || ""}
         />
-        {editPhone && (
+        {/* {editPhone && (
           <small className="text-blue-600 hover:underline cursor-pointer">
             Đổi số điện thoại
           </small>
-        )}
+        )} */}
       </div>
     </div>
   );

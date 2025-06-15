@@ -31,6 +31,7 @@ const ListPost = ({ categoryCode }) => {
 
     if (categoryCode) searchParamObj.categoryCode = categoryCode;
     if (sort === 1) searchParamObj.order = ["createdAt", "DESC"];
+    if (sort === 0) searchParamObj.order = ["star", "DESC"];
     dispatch(getPostsLimit(searchParamObj));
   }, [searchParams, categoryCode, sort]);
 

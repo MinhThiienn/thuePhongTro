@@ -10,7 +10,6 @@ import {
   Instruct,
   PrivacyPolicy,
   FAQ,
-  ForgotPassword,
   Farvorite,
 } from "./Containers/Public";
 import { path } from "./Ultils/constant";
@@ -19,11 +18,13 @@ import {
   CreatePost,
   ManagePost,
   EditAccount,
+  BuyVIP,
 } from "./Containers/System";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as actions from "./Store/Action";
-import { ScrollToTop } from "./Components";
+import { ScrollToTop, AdminRoute } from "./Components";
+import { AdminPage } from "./Containers/Admin";
 function App() {
   const dispatch = useDispatch();
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -59,7 +60,6 @@ function App() {
           <Route path={path.PRIVACY} element={<PrivacyPolicy />} />
           <Route path={path.FAQ} element={<FAQ />} />
           <Route path={path.FAVORITE} element={<Farvorite />} />
-          {/* <Route path={path.FORGOT_PASSWORD} element={<ForgotPassword />} /> */}
 
           <Route
             path={path.DETAL_POST__TITLE__POSTID}
@@ -72,7 +72,16 @@ function App() {
           <Route path={path.CREATE_POST} element={<CreatePost />} />
           <Route path={path.MANAGE_POST} element={<ManagePost />} />
           <Route path={path.EDIT_ACCOUNT} element={<EditAccount />} />
+          <Route path={path.BUY_VIP} element={<BuyVIP />} />
         </Route>
+        <Route
+          path={path.ADMIN}
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </div>
   );

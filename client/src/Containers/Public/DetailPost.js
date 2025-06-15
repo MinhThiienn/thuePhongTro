@@ -19,7 +19,6 @@ const DetailPost = () => {
     }
   }, [postId, dispatch]);
 
-  // Parse images có kiểm tra lỗi
   const images = useMemo(() => {
     if (posts && posts.length > 0) {
       try {

@@ -22,3 +22,4 @@ export { default as Slider } from "./Slider";
 export { default as Map } from "./Map";
 export { default as BoxInfor } from "./BoxInfor";
 export { default as ScrollToTop } from "./ScrollTop";
+export { default as AdminRoute } from "./AdminRoute";

@@ -21,6 +21,8 @@ export const path = {
   FAQ: "cau-hoi-thuong-gap",
   FORGOT_PASSWORD: "/forgot-password",
   FAVORITE: "yeu-thich",
+  ADMIN: "/admin",
+  BUY_VIP: "mua-vip",
 };
 
 export const text = {

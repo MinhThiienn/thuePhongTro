@@ -1,10 +1,16 @@
 import express from "express";
+import verifyAdmin from "../middle/verifyAdmin";
 import verifyToken from "../middle/verifyToken";
 import * as userController from "../controllers/user";
 const router = express.Router();
-
+router.get("/all-users", userController.getAllUsers);
+router.delete("/delete-user/:id", userController.deleteUser);
 router.use(verifyToken);
 router.get("/get-currentUser", userController.getCurrentUser);
 router.put("/", userController.updateUser);
 router.post("/verify-password", userController.verifyPassword);
+router.post("/reset-password/:id", userController.resetPass);
+router.put("/admin/user/:id", verifyAdmin, userController.updateUserByAdmin);
+router.post("/buy-vip", userController.buyVIPPackage);
+router.post("/cancel-vip", userController.cancelVIP);
 export default router;

@@ -99,7 +99,6 @@ const EditAccount = () => {
     const invalidCount = validate({ password: newPassword }, setInvalidFields);
 
     if (invalidCount > 0) {
-      // Gom tất cả message lỗi từ invalidFields để hiện popup
       const errorMessages = invalidFields.map((err) => err.message).join("\n");
       Swal.fire("Warning", errorMessages, "warning");
       return;
@@ -169,13 +168,6 @@ const EditAccount = () => {
               direction="flex-row"
               value={payload?.zalo}
               setValue={setPayload}
-            />
-            <Input
-              name={"fbUrl"}
-              setValue={setPayload}
-              label="Facebook"
-              direction="flex-row"
-              value={payload?.fbUrl}
             />
 
             <div className="flex items-center gap-4">

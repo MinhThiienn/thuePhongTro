@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RelatedPost, Item } from "../../Components";
-import { memo } from "react";
 import * as actions from "../../Store/Action";
 import { useSearchParams } from "react-router-dom";
 import PageFavorite from "./PageFavorite";

@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import * as action from "../../Store/Action";
 import menuManage from "../../Ultils/menuManage";
+import { RiAdminLine } from "react-icons/ri";
 const { CiCirclePlus, AiOutlineLogout, IoIosArrowDown, IoIosArrowUp, GoHeart } =
   icons;
 const Header = () => {
@@ -15,7 +16,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const [searchParams] = useSearchParams();
-  const { isLoggedIn } = useSelector((state) => state.auth);
+  const { isLoggedIn, isAdmin } = useSelector((state) => state.auth);
   const [isShowMenu, setisShowMenu] = useState(false);
   const headerRef = useRef();
   const goLogin = useCallback((flag) => {
@@ -95,7 +96,7 @@ const Header = () => {
               />
 
               {isShowMenu && (
-                <div className="absolute min-w-200 top-full right-0 bg-white shadow-md rounded-md p-4 flex flex-col ">
+                <div className="absolute min-w-200 top-full right-0 bg-white shadow-md rounded-md p-4 flex flex-col">
                   {menuManage.map((item) => {
                     return (
                       <Link
@@ -108,6 +109,21 @@ const Header = () => {
                       </Link>
                     );
                   })}
+                  <Link
+                    to="/he-thong/mua-vip"
+                    className="hover:text-orange-500 text-blue-500 border-b border-gray-200 py-2 items-center gap-2 flex"
+                  >
+                    🌟 Mua VIP
+                  </Link>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="hover:text-orange-500 text-blue-500 border-b border-gray-200 py-2 items-center gap-2 flex"
+                    >
+                      <RiAdminLine />
+                      Trang Admin
+                    </Link>
+                  )}
 
                   <span
                     className="cursor-pointer hover:text-orange-500 text-blue-500 border-gray-200 py-2 flex items-center gap-2"

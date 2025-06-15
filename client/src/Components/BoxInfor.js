@@ -42,9 +42,9 @@ const BoxInfor = ({ userData }) => {
       </a>
       <a
         href={`https://zalo.me/${userData?.zalo}`}
-        className="bg-white py-2 flex items-center justify-center gap-2 w-full rounded-md font-bold text-black text-lg"
+        className="bg-blue-600 py-2 flex items-center justify-center gap-2 w-full rounded-md font-bold text-black text-lg"
       >
-        <SiZalo size={35} color="blue" />
+        <SiZalo size={35} color="white" />
       </a>
     </div>
   );

@@ -3,7 +3,7 @@ import db from "../models";
 import { v4 as generateId } from "uuid";
 import moment from "moment";
 import generateCode from "../../ultis/generateCode";
-import generateDate from "../../ultis/generateDate";
+import generateDate, { generateVipDate } from "../../ultis/generateDate";
 require("dotenv").config();
 
 const { Op } = require("sequelize");
@@ -27,7 +27,16 @@ export const getPostsService = () =>
             attributes: ["name", "phone", "zalo", "avatar"],
           },
         ],
-        attributes: ["id", "title", "star", "address", "description"],
+        attributes: [
+          "id",
+          "title",
+          "star",
+          "address",
+          "description",
+          "imagesId",
+          "attributesId",
+          "overviewId",
+        ],
       });
 
       resolve({
@@ -82,7 +91,17 @@ export const getPostsServiceLimit = (
             },
           },
         ],
-        attributes: ["id", "title", "star", "address", "description"],
+        attributes: [
+          "id",
+          "title",
+          "star",
+          "address",
+          "description",
+          "imagesId",
+          "attributesId",
+          "overviewId",
+          "createdAt",
+        ],
       });
 
       resolve({
@@ -137,8 +156,18 @@ export const createNewPostsService = async (body, userId) => {
     const overviewId = generateId();
     const labelCode = generateCode(body.label);
     const hashtag = `#${Math.floor(Math.random() * Math.pow(10, 6))}`;
-    const currentDate = generateDate();
 
+    const user = await db.User.findOne({ where: { id: userId } });
+    const vipLevel =
+      user && new Date(user.vipExpire) > new Date() ? user.vipLevel : 0;
+    const currentDate = generateVipDate(vipLevel);
+    let star = 0;
+
+    if (user && user.vipLevel && new Date(user.vipExpire) > new Date()) {
+      if (user.vipLevel === 1) star = 3;
+      else if (user.vipLevel === 2) star = 4;
+      else if (user.vipLevel === 3) star = 5;
+    }
     const provinceCode = body.province?.includes("Thành phố")
       ? generateCode(body?.province?.replace("Thành phố", ""))
       : generateCode(body?.province?.replace("Tỉnh", ""));
@@ -170,6 +199,7 @@ export const createNewPostsService = async (body, userId) => {
       provinceCode,
       priceNumber: body.priceNumber,
       areaNumber: body.areaNumber,
+      star: `${star}`,
     });
 
     await db.Attribute.create({
@@ -194,7 +224,7 @@ export const createNewPostsService = async (body, userId) => {
       area: body?.label,
       type: body?.category,
       target: body?.target,
-      bonus: "Tin thường",
+      bonus: vipLevel > 0 ? `VIP ${vipLevel}` : "Tin thường",
       created: currentDate.today,
       expired: currentDate.expireDate,
     });
@@ -266,7 +296,6 @@ export const updatePostService = async (body) => {
   try {
     const { postId, attributesId, imagesId, overviewId, userId } = body;
     const labelCode = generateCode(body.label);
-    const currentDate = generateDate();
 
     const provinceCode = body.province?.includes("Thành phố")
       ? generateCode(body?.province?.replace("Thành phố", ""))

@@ -5,7 +5,6 @@ import moment from "moment";
 import { Button, UpdatePost } from "../../Components";
 import { apiDeletePost } from "../../Services/post";
 import Swal from "sweetalert2";
-import { text } from "../../Ultils/dataContact";
 
 const ManagePost = () => {
   const { postsOfUser, dataEdit } = useSelector((state) => state.post);

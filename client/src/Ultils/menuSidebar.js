@@ -1,5 +1,5 @@
 import icons from "./icon";
-
+import { RiVipLine } from "react-icons/ri";
 const { ImPencil2, MdOutlineLibraryBooks, BiUserPin } = icons;
 
 const memuSidebar = [
@@ -26,6 +26,12 @@ const memuSidebar = [
     text: "Liên hệ",
     path: "/lien-he",
     icon: <BiUserPin />,
+  },
+  {
+    id: 6,
+    text: "Mua gói VIP",
+    path: "/he-thong/mua-vip",
+    icon: <RiVipLine />,
   },
 ];
 
