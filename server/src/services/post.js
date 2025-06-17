@@ -387,3 +387,36 @@ export const deletePost = (postId) =>
       reject(error);
     }
   });
+
+export const updatePostByAdminService = async (body) => {
+  try {
+    const { postId, title, priceNumber, areaNumber, star } = body;
+
+    if (!postId) {
+      return { err: 1, msg: "postId is required" };
+    }
+
+    const post = await db.Post.findOne({ where: { id: postId } });
+
+    if (!post) {
+      return { err: 1, msg: "Bài đăng không tồn tại" };
+    }
+
+    await db.Post.update({ title, star }, { where: { id: postId } });
+
+    await db.Attribute.update(
+      {
+        price:
+          priceNumber >= 1000000
+            ? `${priceNumber / 1000000} triệu/tháng`
+            : `${priceNumber} đồng/tháng`,
+        acreage: `${areaNumber}m²`,
+      },
+      { where: { id: post.attributesId } }
+    );
+
+    return { err: 0, msg: "Cập nhật thành công" };
+  } catch (error) {
+    throw error;
+  }
+};

@@ -64,8 +64,7 @@ const validate = (payload, setInvalidFields) => {
           ]);
           invalids++;
         }
-        if (+item[1] < 1000) {
-          // kiểm nếu giá < 1000
+        if (+item[1] < 1) {
           setInvalidFields((prev) => [
             ...prev,
             {

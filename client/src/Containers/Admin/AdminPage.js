@@ -9,13 +9,15 @@ import { apiResetPassWord } from "../../Services/user";
 import EditUserModal from "./EditUSerModal";
 import { apiAdminUpdateUser } from "../../Services/user";
 import { useNavigate } from "react-router-dom";
+import EditPostModal from "./EditPostModal";
 
 const AdminPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const posts = useSelector((state) => state?.post?.posts) || [];
   const { currentUser } = useSelector((state) => state?.user);
-
+  const [isEditPostOpen, setIsEditPostOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
   const users = useSelector((state) => state?.user?.allUsers) || [];
 
   const [currentPageUser, setCurrentPageUser] = useState(1);
@@ -23,7 +25,13 @@ const AdminPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const handleModalClose = (shouldReload) => {
+    setIsEditPostOpen(false);
+    setSelectedPost(null);
+    if (shouldReload) {
+      dispatch(actions.getPosts());
+    }
+  };
   const perPage = 10;
 
   const filteredUsers = searchTerm
@@ -127,7 +135,8 @@ const AdminPage = () => {
   };
 
   const handleEditPost = (post) => {
-    console.log("Sửa bài đăng", post);
+    setSelectedPost(post);
+    setIsEditPostOpen(true);
   };
 
   const handleDeletePost = (post) => {
@@ -171,10 +180,10 @@ const AdminPage = () => {
   };
   console.log(posts);
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-7xl mx-auto">
       <button
         onClick={() => navigate("/")}
-        className="flex items-center gap-2 px-4 py-2 mr-4 mb-6 bg-blue-500 text-gray-50 font-semibold rounded shadow-md hover:bg-blue-600 transition-all transform hover:translate-y-[-2px]"
+        className="flex items-center gap-2 px-4 py-2 mr-4 mb-6 bg-blue-500 text-gray-50 font-semibold rounded shadow-md hover:bg-blue-600 transition-all transform hover:-translate-y-1"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -187,20 +196,22 @@ const AdminPage = () => {
         <span>Về Home</span>
       </button>
 
-      <h1 className="text-3xl font-semibold mb-6">Trang quản trị</h1>
+      <h1 className="text-3xl font-semibold mb-6 text-gray-800">
+        Trang quản trị
+      </h1>
 
       <section className="mb-6 grid grid-cols-3 gap-6">
-        <div className="p-4 bg-blue-500 text-gray-50 rounded-lg shadow-md">
+        <div className="p-6 bg-blue-500 text-gray-50 rounded-2xl shadow-md transform transition-all hover:shadow-lg hover:-translate-y-1">
           <h2 className="text-xl font-semibold mb-2">Tài khoản</h2>
           <p className="text-3xl font-bold">{totalUsers}</p>
         </div>
 
-        <div className="p-4 bg-green-500 text-gray-50 rounded-lg shadow-md">
+        <div className="p-6 bg-green-500 text-gray-50 rounded-2xl shadow-md transform transition-all hover:shadow-lg hover:-translate-y-1">
           <h2 className="text-xl font-semibold mb-2">Bài đăng</h2>
           <p className="text-3xl font-bold">{totalPosts}</p>
         </div>
 
-        <div className="p-4 bg-yellow-500 text-gray-50 rounded-lg shadow-md">
+        <div className="p-6 bg-yellow-500 text-gray-50 rounded-2xl shadow-md transform transition-all hover:shadow-lg hover:-translate-y-1">
           <h2 className="text-xl font-semibold mb-2">Bài đăng VIP</h2>
           <p className="text-3xl font-bold">{totalVIP}</p>
         </div>
@@ -209,12 +220,12 @@ const AdminPage = () => {
       <DashboardChart chartData={chartData} COLORS={COLORS} />
 
       {/* Tìm kiếm tài khoản */}
-      <div className="mb-4 relative max-w-md">
+      <div className="mb-6 relative max-w-md">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          className="absolute left-3 top-1/2 transform -translate-y-2/2 w-5 h-5 text-gray-400"
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
         >
           <path
             fillRule="evenodd"
@@ -232,9 +243,12 @@ const AdminPage = () => {
         />
       </div>
 
+      {/* Danh sách tài khoản */}
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-4">Danh sách tài khoản</h2>
-        <table className="min-w-full bg-gray-100 shadow-md rounded-lg overflow-hidden">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+          Danh sách tài khoản
+        </h2>
+        <table className="min-w-full bg-gray-50 shadow-md rounded-2xl overflow-hidden">
           <thead>
             <tr className="bg-gray-200">
               <th className="p-4 text-gray-500 font-semibold">ID</th>
@@ -248,7 +262,10 @@ const AdminPage = () => {
           <tbody>
             {displayedUsers.length > 0 ? (
               displayedUsers.map((user) => (
-                <tr key={user.id} className="border-t">
+                <tr
+                  key={user.id}
+                  className="border-t hover:bg-gray-100 transition-all"
+                >
                   <td className="p-4">
                     {user?.id
                       ? `${user.id.match(/\d/g)?.join("")?.slice(0, 5)}`
@@ -261,19 +278,19 @@ const AdminPage = () => {
                   <td className="p-4 flex gap-2">
                     <button
                       onClick={() => handleEditUser(user)}
-                      className="px-2 py-1 bg-blue-500 text-gray-50 font-semibold rounded"
+                      className="px-2 py-1 bg-blue-500 text-gray-50 font-semibold rounded transition-all hover:bg-blue-600"
                     >
                       Sửa
                     </button>
                     <button
                       onClick={() => handleDeleteUser(user)}
-                      className="px-2 py-1 bg-red-500 text-gray-50 font-semibold rounded"
+                      className="px-2 py-1 bg-red-500 text-gray-50 font-semibold rounded transition-all hover:bg-red-600"
                     >
                       Xóa
                     </button>
                     <button
                       onClick={() => handleResetPassWord(user)}
-                      className="px-2 py-1 bg-green-500 text-gray-50 font-semibold rounded"
+                      className="px-2 py-1 bg-green-500 text-gray-50 font-semibold rounded transition-all hover:bg-green-600"
                     >
                       Reset password
                     </button>
@@ -282,7 +299,7 @@ const AdminPage = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="p-4 text-center">
+                <td colSpan="6" className="p-4 text-center">
                   Đang tải...
                 </td>
               </tr>
@@ -313,7 +330,6 @@ const AdminPage = () => {
             ? `Danh sách bài đăng của ${filteredUsers[0].name}`
             : "Danh sách bài đăng"}
         </h2>
-
         {filteredUsers.length === 1 ? (
           relatedPosts.length > 0 ? (
             <table className="min-w-full bg-gray-100 shadow-md rounded-lg overflow-hidden">
@@ -322,6 +338,7 @@ const AdminPage = () => {
                   <th className="p-4 text-gray-500 font-semibold">ID</th>
                   <th className="p-4 text-gray-500 font-semibold">Tiêu đề</th>
                   <th className="p-4 text-gray-500 font-semibold">Giá</th>
+                  <th className="p-4 text-gray-500 font-semibold">Diện tích</th>
                   <th className="p-4 text-gray-500 font-semibold">VIP</th>
                   <th className="p-4 text-gray-500 font-semibold">Username</th>
                   <th className="p-4 text-gray-500 font-semibold">Hành Động</th>
@@ -339,6 +356,7 @@ const AdminPage = () => {
                       <td className="p-4">{post?.attributes?.hashtag}</td>
                       <td className="p-4">{post.title}</td>
                       <td className="p-4">{post?.attributes?.price}</td>
+                      <td className="p-4">{post?.attributes?.acreage}</td>
                       <td className="p-4">
                         {parseInt(post?.star) > 0 ? (
                           <span className="px-2 py-1 bg-yellow-500 text-gray-50 font-semibold rounded">
@@ -380,6 +398,7 @@ const AdminPage = () => {
                 <th className="p-4 text-gray-500 font-semibold">ID</th>
                 <th className="p-4 text-gray-500 font-semibold">Tiêu đề</th>
                 <th className="p-4 text-gray-500 font-semibold">Giá</th>
+                <th className="p-4 text-gray-500 font-semibold">Diện tích</th>
                 <th className="p-4 text-gray-500 font-semibold">VIP</th>
                 <th className="p-4 text-gray-500 font-semibold">Username</th>
                 <th className="p-4 text-gray-500 font-semibold">Hành Động</th>
@@ -396,6 +415,8 @@ const AdminPage = () => {
                     <td className="p-4">{post?.attributes?.hashtag}</td>
                     <td className="p-4">{post.title}</td>
                     <td className="p-4">{post?.attributes?.price}</td>
+                    <td className="p-4">{post?.attributes?.acreage}</td>
+
                     <td className="p-4">
                       {parseInt(post?.star) > 0 ? (
                         <span className="px-2 py-1 bg-yellow-500 text-gray-50 font-semibold rounded">
@@ -428,8 +449,14 @@ const AdminPage = () => {
                 ))}
             </tbody>
           </table>
+        )}{" "}
+        {isEditPostOpen && (
+          <EditPostModal
+            isOpen={isEditPostOpen}
+            onClose={handleModalClose}
+            post={selectedPost}
+          />
         )}
-
         <PageAdmin
           total={
             filteredUsers.length === 1 ? relatedPosts.length : posts.length

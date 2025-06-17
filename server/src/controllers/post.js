@@ -176,3 +176,26 @@ export const deletePost = async (req, res) => {
     });
   }
 };
+export const updatePostByAdmin = async (req, res) => {
+  const { postId, title, priceNumber, areaNumber, star } = req.body;
+
+  if (!postId) {
+    return res.status(400).json({ err: 1, msg: "postId is required" });
+  }
+
+  try {
+    const response = await getPostsService.updatePostByAdminService({
+      postId,
+      title,
+      priceNumber,
+      areaNumber,
+      star,
+    });
+
+    return res.status(200).json(response);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ err: -1, msg: "Server error: " + error.message });
+  }
+};

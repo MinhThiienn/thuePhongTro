@@ -110,3 +110,16 @@ export const apiDeletePost = (postId) =>
       reject(error);
     }
   });
+export const apiUpdatePostByAdmin = (payload) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const response = await axiosConfig({
+        method: "put",
+        url: "/api/v1/post/admin/update",
+        data: payload,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
